@@ -1,0 +1,20 @@
+{
+  "name": "jschess",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "JavaScript implementation of chess written from scratch by Jonathan Kurtz",
+  "main": "chess.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xero-lib/JSChess.git"
+  },
+  "author": "Jonathan Kurtz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xero-lib/JSChess/issues"
+  },
+  "homepage": "https://github.com/xero-lib/JSChess#readme"
+}
