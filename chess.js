@@ -1,10 +1,5 @@
 //todo confirm that offset filters for each piece work
-import printBoard from "./util/printBoard.js";
 import makeMove from "./util/makeMove.js";
-
-//assign pieces
-printBoard();
-console.log();
 
 //all light pawn push
 makeMove("a2", "a4");
