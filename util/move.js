@@ -1,5 +1,5 @@
 import calcMoves from "../calc/calcMoves.js";
-import alphaToCoord from "./alphaToCord.js";
+import alphaToCoord from "./alphaToCoord.js";
 import compboard from "../board/compboard.js";
 
 export default function move(piece, destination) {

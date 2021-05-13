@@ -1,26 +1,27 @@
 import { Pawn } from "../data/classes.js";
 import refreshBoard from "../util/refreshBoard.js";
 import calcOffsets from "./calcOffsets.js";
+import calcWatches from "./calcWatches.js";
 
-export default function calcMoves(piece) {
+export default function calcMoves(piece, w_tf) {
 	refreshBoard();
 
 	if (piece === null) return;
 
 	let [y_ax, x_ax] = piece.location;
-	let availableOffsets = calcOffsets(piece);
-	if (piece.hasMoved) {
-		availableOffsets.first = null;
-	}
+	let availableOffsets;
+  if(w_tf) availableOffsets = calcWatches(piece);
+  else availableOffsets = calcOffsets(piece);
 
-	//   console.log("pl", piece.location);
-	//   console.log("ao", availableOffsets);
 	let possibleMoves = [];
 
 	if (availableOffsets.length == 0) return [];
-
 	if (piece.constructor == Pawn) {
 		let allMoves = [];
+    if (piece.hasMoved) {
+		  availableOffsets.first = null;
+	  }
+
 		if (!piece.hasMoved) {
 			availableOffsets.first.forEach((idx) => {
 				if (typeof idx[0] != "number") {
@@ -56,15 +57,14 @@ export default function calcMoves(piece) {
 			}
 		});
 	} else {
-		availableOffsets.forEach((value, _, array) => {
-			if (value.length > 1) {
-				availableOffsets.forEach((offset) => {
+		availableOffsets.forEach((offset, idx, array) => {
+			if (offset.length > 1) {
 					possibleMoves.push([y_ax + offset[0], x_ax + offset[1]]);
-				});
 			} else {
 				possibleMoves.push(array);
 			}
 		});
 	}
+
 	return possibleMoves;
 }

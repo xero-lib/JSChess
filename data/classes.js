@@ -6,6 +6,7 @@ export class King {
 		this.defaultPos = color.toLowerCase() == "dark" ? [7, 4] : [0, 4];
 	}
 
+  watches = [];
 	offsets = offsets.king;
 	color = this.color;
 	value = 100;
@@ -20,6 +21,7 @@ export class Queen {
 		this.defaultPos = color.toLowerCase() == "dark" ? [7, 3] : [0, 3];
 	}
 
+  watches = [];
 	offsets = offsets.queen;
 	color = this.color;
 	value = 8;
@@ -42,9 +44,9 @@ export class Bishop {
 		// this.watches = ()
 	}
 
+  watches = [];
 	offsets = offsets.bishop;
 	color = this.color;
-
 	value = 3;
 	symbol = "B";
 	defaultPos = this.defaultPos;
@@ -64,9 +66,9 @@ export class Knight {
 				: [0, 6];
 	}
 
+  watches = [];
 	offsets = offsets.knight;
 	color = this.color;
-
 	value = 3;
 	symbol = "N";
 	defaultPos = this.defaultPos;
@@ -86,9 +88,9 @@ export class Rook {
 				: [0, 7];
 	}
 
+  watches = [];
 	offsets = offsets.rook;
 	color = this.color;
-
 	value = 4;
 	symbol = "R";
 	hasMoved = false;
@@ -140,6 +142,8 @@ export class Pawn {
 				? [1, 7]
 				: null;
 	}
+  
+  watches = [];
 	offsets = this.offsets;
 	color = this.color;
 	value = [1, 3, 4, 8];

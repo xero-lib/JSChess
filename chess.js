@@ -1,5 +1,6 @@
 //todo confirm that offset filters for each piece work
 import makeMove from "./util/makeMove.js";
+import compboard from "./board/compboard.js";
 
 //all light pawn push
 makeMove("a2", "a4");
@@ -14,3 +15,5 @@ makeMove("h2", "h4");
 //test rook
 makeMove("a1", "a3");
 makeMove("h1", "h3");
+
+compboard.forEach(row => row.forEach(square => console.log(square.piece?.constructor, square.piece?.watches)))
