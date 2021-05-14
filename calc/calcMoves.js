@@ -22,19 +22,10 @@ export default function calcMoves(piece, w_tf) {
 		  availableOffsets.first = null;
 	  }
 
-		if (!piece.hasMoved) {
-			availableOffsets.first.forEach((idx) => {
-				if (typeof idx[0] != "number") {
-					if (availableOffsets.first !== null) {
-						allMoves.push(...idx);
-					}
-				} else {
-					if (availableOffsets.first !== null) {
-						allMoves.push(idx);
-					}
-				}
-			});
+		if (!piece.hasMoved && availableOffsets.first !== null) {
+      allMoves.push(availableOffsets.first);
 		}
+
 		if (piece.hasMoved && availableOffsets.move) {
 			allMoves.push(availableOffsets.move);
 		}

@@ -9,7 +9,8 @@ export default function() {
         if(square.piece.constructor == Pawn) {
           square.piece.watches = [];
           Object.values(calcWatches(square.piece)).forEach((segment) => {
-            if(segment && segment[0].length > 1) {
+            console.log(segment);
+            if(segment && segment[0] && segment[0].length > 1) {
               segment.forEach((subSegment) => {
                 square.piece.watches.push(subSegment)
               })

@@ -14,6 +14,11 @@ makeMove("h2", "h4");
 
 //test rook
 makeMove("a1", "a3");
-makeMove("h1", "h3");
+makeMove("a3", "a2");
+makeMove("a2", "h2");
+makeMove("h2", "a2");
+makeMove("a2", "a1");
 
-compboard.forEach(row => row.forEach(square => console.log(square.piece?.constructor, square.piece?.watches)))
+compboard.forEach(row => row.forEach(square => {
+  /*if(square.piece?.constructor.name == "Queen")*/ console.log(square.piece?.constructor.name, square.piece?.watches);
+}))

@@ -24,10 +24,7 @@ let offsets = {
 	],
 	pawn: {
 		light: {
-			first: [
-				[2, 0],
-				[1, 0],
-			],
+			first: [2, 0],
 			move: [1, 0],
 			capture: [
 				[1, -1],
@@ -35,10 +32,7 @@ let offsets = {
 			],
 		},
 		dark: {
-			first: [
-				[-2, 0],
-				[-1, 0],
-			],
+			first: [-2, 0],
 			move: [-1, 0],
 			capture: [
 				[-1, -1],
@@ -48,6 +42,7 @@ let offsets = {
 	},
 };
 
+//assign final rook offsets
 for (let i = 0; i < 8; i++) {
 	offsets.rook[i] = [i + 1, 0];
 	offsets.rook[i + 8] = [0, i + 1];

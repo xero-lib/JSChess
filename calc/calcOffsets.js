@@ -1,3 +1,5 @@
+//todo fix rook, moving right, down... broken
+
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
 import refreshBoard from "../util/refreshBoard.js";
 import compboard from "../board/compboard.js";
@@ -200,7 +202,7 @@ export default function(piece) {
               distance = y - 1;
             }
           } else {
-            distance = y - 1;
+            distance = y;
           }
         }
 
@@ -213,49 +215,46 @@ export default function(piece) {
       if (y_ax !== 0) {
         distance = 0;
         found = false;
-        for (let y = y_ax - 1; y > 0 && found === false; y--) {
-          if (compboard[y][x_ax].piece !== null) {
+        for (let y = 1; y <= y_ax && found === false; y++) {
+          if (compboard[y_ax - y][x_ax]?.piece !== null && compboard[y_ax - y][x_ax]?.piece !== undefined) {
             found = true;
             if (
-              compboard[y][x_ax].piece.color !==
+              compboard[y_ax - y][x_ax].piece.color !==
               piece.color
             ) {
-              distance = y_ax - 1 - y;
+              distance = y;
             } else {
               distance = y_ax - 1 - y - 1;
             }
           } else {
-            distance = y_ax - 1 - y - 1;
+            distance = y;
           }
         }
 
         //filter impossible offsets
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] >= 0 - distance
+        possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0 - distance || move[1] != 0 || move[0] > 0
         );
       }
-
+      
       //search distance left
       if (x_ax !== 0) {
         distance = 0;
         found = false;
-        for (let x = x_ax; x > 0 && found === false; x--) {
-          if (compboard[y_ax][x].piece !== null) {
+        for (let x = 1; x <= x_ax && found === false; x++) {
+          if (compboard[y_ax][x_ax - x].piece !== null) {
             found = true;
-            if (compboard[y_ax][x].piece.color !== piece.color) {
-              distance = x_ax - x;
+            if (compboard[y_ax][x_ax - x].piece.color !== piece.color) {
+              distance = x;
             } else {
-              distance = x_ax - x - 1;
+              distance = x + 1;
             }
           } else {
-            distance = x_ax - x - 1;
+            distance = x;
           }
         }
 
         //filter impossible offsets
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[1] >= 0 - distance
-        );
+        possibleOffsets = possibleOffsets.filter((move) => -move[1] <= distance);
       }
 
       //search distance right
@@ -274,7 +273,7 @@ export default function(piece) {
               distance = x - 1;
             }
           } else {
-            distance = x - 1;
+            distance = x;
           }
         }
         //filter impossible offsets
@@ -874,15 +873,15 @@ export default function(piece) {
         );
       else if (y_ax == 7)
         possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] >= 0
+          (move) => move[0] <= 0
         );
       if (x_ax == 0)
         possibleOffsets = possibleOffsets.filter(
-          (move) => move[1] <= 0
+          (move) => move[1] >= 0
         );
       else if (x_ax == 7)
         possibleOffsets = possibleOffsets.filter(
-          (move) => move[1] >= 0
+          (move) => move[1] <= 0
         );
 
       //check for piece up

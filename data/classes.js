@@ -8,6 +8,7 @@ export class King {
 
   watches = [];
 	offsets = offsets.king;
+  availableOffsets = [];
 	color = this.color;
 	value = 100;
 	symbol = "K";
@@ -23,6 +24,7 @@ export class Queen {
 
   watches = [];
 	offsets = offsets.queen;
+  availableOffsets = [];
 	color = this.color;
 	value = 8;
 	symbol = "Q";
@@ -46,6 +48,7 @@ export class Bishop {
 
   watches = [];
 	offsets = offsets.bishop;
+  availableOffsets = [];
 	color = this.color;
 	value = 3;
 	symbol = "B";
@@ -68,6 +71,7 @@ export class Knight {
 
   watches = [];
 	offsets = offsets.knight;
+  availableOffsets = [];
 	color = this.color;
 	value = 3;
 	symbol = "N";
@@ -90,6 +94,7 @@ export class Rook {
 
   watches = [];
 	offsets = offsets.rook;
+  availableOffsets = [];
 	color = this.color;
 	value = 4;
 	symbol = "R";
@@ -145,6 +150,7 @@ export class Pawn {
   
   watches = [];
 	offsets = this.offsets;
+  availableOffsets = [];
 	color = this.color;
 	value = [1, 3, 4, 8];
 	symbol = "P";
