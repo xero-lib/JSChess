@@ -35,10 +35,8 @@ export default function(piece) {
         possibleOffsets.capture = possibleOffsets.capture?.filter(
           (move) => move[1] !== 1
         );
-      console.log(possibleOffsets)
       possibleOffsets.capture?.forEach((offset) => {
-        console.log("OFF",offset)
-        if(!offset == null) currentMove = [y_ax + offset[0], x_ax + offset[1]]
+        if(offset !== null) currentMove = [y_ax + offset[0], x_ax + offset[1]]
         if(currentMove) watches.push(currentMove); 
       });
 
