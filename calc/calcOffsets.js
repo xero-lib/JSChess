@@ -51,19 +51,19 @@ export default function(piece) {
           }
 
           if (compboard[y_ax - 1][x_ax].piece !== null) {
-            possibleOffsets.first = possibleOffsets.first.filter(
+            possibleOffsets.move = possibleOffsets.move.filter(
               (move) => move[0] != -1
             );
           }
         }
-
+        
         if (
           x_ax !== 0 &&
-          x_ax !== 7 /* (implement en passant) && y_ax !== 5*/
+          x_ax !== 7
         ) {
           if (
             compboard[y_ax - 1][x_ax - 1].piece === null ||
-            compboard[y_ax - 1][x_ax - 1].piece.color != piece.color
+            compboard[y_ax - 1][x_ax - 1].piece.color == piece.color
           ) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != -1
@@ -72,7 +72,7 @@ export default function(piece) {
 
           if (
             compboard[y_ax - 1][x_ax + 1] === null ||
-              compboard[y_ax - 1][x_ax + 1] ?.piece ?.color != piece.color
+            compboard[y_ax - 1][x_ax + 1].piece.color == piece.color
 					) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != 1
@@ -81,9 +81,11 @@ export default function(piece) {
         }
 
         if (
-          (x_ax !== 0 &&
-            compboard[y_ax - 1][x_ax - 1].piece === null) ||
-            compboard[y_ax - 1][x_ax - 1] ?.piece ?.color != piece.color
+          x_ax !== 0 &&
+          (
+            compboard[y_ax - 1][x_ax - 1].piece === null ||
+            compboard[y_ax - 1][x_ax - 1].piece.color == piece.color
+          )
 				) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != -1
@@ -99,6 +101,7 @@ export default function(piece) {
             (move) => move[1] != 1
           );
         }
+        
         //implement en passant
       } else {
         if (compboard[y_ax + 1][x_ax].piece !== null) {
@@ -163,8 +166,9 @@ export default function(piece) {
 
         //implement en passant
       }
-      if (possibleOffsets.capture.length === 1)
-        possibleOffsets.capture = possibleOffsets.capture[0];
+      if (possibleOffsets.capture.length === 1) possibleOffsets.capture = possibleOffsets.capture[0];
+      
+      console.log(possibleOffsets);
       return possibleOffsets;
     case Rook:
       if (y_ax == 7)

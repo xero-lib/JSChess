@@ -1,7 +1,6 @@
 import { Pawn } from "../data/classes.js";
 import refreshBoard from "../util/refreshBoard.js";
 import calcOffsets from "./calcOffsets.js";
-import calcWatches from "./calcWatches.js";
 
 export default function calcMoves(piece, w_tf) {
 	refreshBoard();
@@ -9,21 +8,19 @@ export default function calcMoves(piece, w_tf) {
 	if (piece === null) return;
 
 	let [y_ax, x_ax] = piece.location;
-	let availableOffsets;
-  if(w_tf) availableOffsets = calcWatches(piece);
-  else availableOffsets = calcOffsets(piece);
+	let availableOffsets = calcOffsets(piece);
 
 	let possibleMoves = [];
 
 	if (availableOffsets.length == 0) return [];
 	if (piece.constructor == Pawn) {
 		let allMoves = [];
-    if (piece.hasMoved) {
-		  availableOffsets.first = null;
-	  }
+		if (piece.hasMoved) {
+			availableOffsets.first = null;
+		}
 
 		if (!piece.hasMoved && availableOffsets.first !== null) {
-      allMoves.push(availableOffsets.first);
+			allMoves.push(availableOffsets.first);
 		}
 
 		if (piece.hasMoved && availableOffsets.move) {
@@ -50,7 +47,7 @@ export default function calcMoves(piece, w_tf) {
 	} else {
 		availableOffsets.forEach((offset, idx, array) => {
 			if (offset.length > 1) {
-					possibleMoves.push([y_ax + offset[0], x_ax + offset[1]]);
+				possibleMoves.push([y_ax + offset[0], x_ax + offset[1]]);
 			} else {
 				possibleMoves.push(array);
 			}
