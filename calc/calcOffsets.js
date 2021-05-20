@@ -167,8 +167,7 @@ export default function(piece) {
         //implement en passant
       }
       if (possibleOffsets.capture.length === 1) possibleOffsets.capture = possibleOffsets.capture[0];
-      
-      console.log(possibleOffsets);
+    
       return possibleOffsets;
     case Rook:
       if (y_ax == 7)

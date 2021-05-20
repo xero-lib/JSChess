@@ -18,15 +18,16 @@ export default function calcMoves(piece) {
 		if (piece.hasMoved) {
 			availableOffsets.first = null;
 		}
-
+		
 		if (!piece.hasMoved && availableOffsets.first !== null) {
 			allMoves.push(availableOffsets.first);
+			allMoves.push(availableOffsets.move);
 		}
-
+		
 		if (piece.hasMoved && availableOffsets.move) {
 			allMoves.push(availableOffsets.move);
 		}
-
+		
 		if (availableOffsets.capture[0]) {
 			if (availableOffsets.capture[0].length > 1) {
 				allMoves.push(...availableOffsets.capture);
@@ -38,7 +39,7 @@ export default function calcMoves(piece) {
 		} else {
 			availableOffsets.capture = null;
 		}
-
+		
 		allMoves.forEach((offset) => {
 			if (offset.length > 0) {
 				possibleMoves.push([y_ax + offset[0], x_ax + offset[1]]);
@@ -53,6 +54,6 @@ export default function calcMoves(piece) {
 			}
 		});
 	}
-
+	
 	return possibleMoves;
 }
