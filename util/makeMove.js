@@ -7,9 +7,9 @@ import assignWatches from "../util/assignWatches.js";
 export let moveCount = 0;
 export let turn = "Light";
 export default function makeMove(start, end) {
+	console.log("T&M",turn, moveCount, "and the color is", coordToPiece(start).color)
 	assignWatches();
 	if (coordToPiece(start).color == turn) {
-		// console.log("Matching");
 		let ret = move(coordToLocation(start).piece, end);
 		if (ret) {
 			moveCount++;
