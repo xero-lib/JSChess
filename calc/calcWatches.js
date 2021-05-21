@@ -1,8 +1,9 @@
 //duplicate of calcOffsets except it counts own pieces. It can all be consolidated at some point.
 
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
+import board from "../board/compboard.js"
 
-export default function(piece, compboard) {
+export default function(piece, compboard = board) {
   let watches = [];
   let currentMove = [];
   let possibleOffsets;

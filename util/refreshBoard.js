@@ -1,8 +1,8 @@
-import compboard from "../board/compboard.js";
+import board from "../board/compboard.js";
 import calcOffsets from "../calc/calcOffsets.js";
 import calcWatches from "../calc/calcWatches.js";
 
-export default function refreshBoard() {
+export default function refreshBoard(compboard = board) {
 	for (let y = 0; y < 8; y++) {
 		for (let x = 0; x < 8; x++) {
 			if (compboard[y][x].piece) {
