@@ -1,12 +1,12 @@
 //todo confirm that offset filters for each piece work
 import makeMove from "./util/makeMove.js";
-import compboard from "./board/compboard.js";
-import {turn} from "./util/makeMove.js";
+// import compboard from "./board/compboard.js";
+// import {turn} from "./util/makeMove.js";
 
 //testing turn system
-console.log(turn)
+// console.log(turn)
 makeMove("a2", "a4");
-console.log(turn)
+// console.log(turn)
 makeMove("a7", "a6"); //dark pawn cannot move?
 // console.log(turn)
 makeMove("c2", "c4");
