@@ -1,5 +1,5 @@
 //todo fix rook, moving right, down... broken
-
+import _ from "lodash";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
 import refreshBoard from "../util/refreshBoard.js";
 import compboard from "../board/compboard.js";
@@ -7,8 +7,8 @@ import assignWatches from "../util/assignWatches.js";
 
 export default function(piece) {
   let possibleOffsets;
-  if (piece.constructor == Pawn) possibleOffsets = { ...piece.offsets };
-  else possibleOffsets = [...piece.offsets];
+  if (piece.constructor == Pawn) possibleOffsets = _.cloneDeep(piece.offsets);
+  else possibleOffsets = _.cloneDeep(piece.offsets);
   let [y_ax, x_ax] = piece.location;
   let found = false;
   let distance = 0;

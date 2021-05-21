@@ -1,26 +1,42 @@
-//duplicate of calcOffsets except it counts own pieces. It can all be consolidated at some point.
-
-import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
+import _ from "lodash";
+import { 
+  Pawn,
+  Rook,
+  Knight,
+  Bishop,
+  Queen,
+  King
+} from "../data/classes.js";
 import board from "../board/compboard.js"
+import offsets from "../data/offsets.js";
 
 export default function(piece, compboard = board) {
-  let watches = [];
-  let currentMove = [];
-  let possibleOffsets;
-  if (piece.constructor == Pawn) possibleOffsets = {...piece.offsets};
-  else possibleOffsets = [...piece.offsets];
-  let [y_ax, x_ax] = piece.location;
-  let found = false;
-  let distance = 0;
-
-  if (y_ax == undefined || x_ax == undefined) return null;
+  let watches     = [],
+      currentMove = [],
+      possibleOffsets ;
 
   switch (piece.constructor) {
     case Pawn:
-      //autofilter forward
-      possibleOffsets.move = null;
-      possibleOffsets.first = null;
-      
+      if(piece.color.toLowerCase() == "dark" ) possibleOffsets = _.cloneDeep(offsets.pawn.dark ['capture']); else 
+      if(piece.color.toLowerCase() == "light") possibleOffsets = _.cloneDeep(offsets.pawn.light['capture']); break;
+    case Rook  : possibleOffsets = _.cloneDeep(offsets.rook  ); break;
+    case Knight: possibleOffsets = _.cloneDeep(offsets.knight); break;
+    case Bishop: possibleOffsets = _.cloneDeep(offsets.bishop); break;
+    case Queen : possibleOffsets = _.cloneDeep(offsets.queen ); break;
+    case King  : possibleOffsets = _.cloneDeep(offsets.king  ); break;
+  }
+
+  let [y_ax, x_ax] = piece.location;
+  let found        = false;
+  let distance     = 0;
+
+  if (
+    y_ax == undefined ||
+    x_ax == undefined
+    ) return null;
+
+  switch (piece.constructor) {
+    case Pawn:
       //check for edge pawn
       if (x_ax === 0) {
         if(piece.color.toLowerCase() == "dark" ) return([piece.location[0]-1, piece.location[1]+1]);
@@ -40,14 +56,11 @@ export default function(piece, compboard = board) {
       }
 
     case Rook:
-      if (y_ax == 7)
-        possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0);
-      if (y_ax == 0)
-        possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0);
-      if (x_ax == 7)
-        possibleOffsets = possibleOffsets.filter((move) => move[1] <= 0);
-      if (x_ax == 0)
-        possibleOffsets = possibleOffsets.filter((move) => move[1] >= 0);
+      console.log(possibleOffsets);
+      if (y_ax == 7) possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0);
+      if (y_ax == 0) possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0);
+      if (x_ax == 7) possibleOffsets = possibleOffsets.filter((move) => move[1] <= 0);
+      if (x_ax == 0) possibleOffsets = possibleOffsets.filter((move) => move[1] >= 0);
 
       //search distance up
       if (y_ax !== 7) {
