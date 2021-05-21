@@ -20,13 +20,9 @@ export default function(piece, move) {
     tempBoard[tpiece.location[0]][tpiece.location[1]] = null;
     tempBoard[tmove[0]][tmove[1]] = tpiece;
     tpiece.location = tmove;
-    // console.log(tempBoard)
-    let twatches = calcWatches(tpiece, tempBoard);
-    console.log(twatches); //attempting to discover why this is an empty array
-    //possible causes:
-    //// external functions using different board
-    //calcWatches using current board offsets instead of tempBoard offsets? //?doubtful because initial check is still using current offsets
     //calc watches for that tempBoard
+    let twatches = calcWatches(tpiece, tempBoard);
+    console.log(twatches);
     //check if watches hit king
 
 }

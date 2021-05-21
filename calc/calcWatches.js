@@ -22,21 +22,23 @@ export default function(piece, compboard = board) {
       possibleOffsets.first = null;
       
       //check for edge pawn
-      if (x_ax === 0)
-        possibleOffsets.capture = possibleOffsets.capture?.filter(
-          (move) => move[1] !== -1
-        );
+      if (x_ax === 0) {
+        if(piece.color.toLowerCase() == "dark" ) return([piece.location[0]-1, piece.location[1]+1]);
+        if(piece.color.toLowerCase() == "light") return([piece.location[0]+1, piece.location[1]+1]);
+      }
 
-      if (x_ax === 7)
-        possibleOffsets.capture = possibleOffsets.capture?.filter(
-          (move) => move[1] !== 1
-        );
-      possibleOffsets.capture?.forEach((offset) => {
-        if(offset !== null) currentMove = [y_ax + offset[0], x_ax + offset[1]]
-        if(currentMove) watches.push(currentMove); 
-      });
+      if (x_ax === 7) {
+        if(piece.color.toLowerCase() == "dark" ) return([piece.location[0]-1, piece.location[1]-1]);
+        if(piece.color.toLowerCase() == "light") return([piece.location[0]+1, piece.location[1]-1]);  
+      }
 
-      return watches;
+      //if not edge pawn
+      switch(piece.color.toLowerCase()) {
+        case "light": return([[piece.location[0]+1, piece.location[1]+1], [piece.location[0]+1, piece.location[1]-1]]);
+        case "dark" : return([[piece.location[0]-1, piece.location[1]+1], [piece.location[0]-1, piece.location[1]-1]]);
+        default: return false;
+      }
+
     case Rook:
       if (y_ax == 7)
         possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0);
@@ -277,7 +279,7 @@ export default function(piece, compboard = board) {
         });
       }
 
-      //filter down/right //! brobably broken
+      //filter down/right //! probably broken
       if ([y_ax, x_ax] != [0, 7]) {
         distance = 0;
         found = false;
