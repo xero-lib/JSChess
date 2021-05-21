@@ -8,7 +8,7 @@ export default function() {
       if(square.piece !== null) { //! Also needs to add own pieces to disallow king capturing a piece that is watched
         if(square.piece.constructor == Pawn) {
           square.piece.watches = [];
-          calcWatches(square.piece).forEach((segment) => {
+          calcWatches(square.piece, compboard).forEach((segment) => {
             if(segment && segment[0] && segment[0].length > 1) {
               segment.forEach((subSegment) => {
                 square.piece.watches.push(subSegment)
@@ -18,7 +18,7 @@ export default function() {
             }
           });
         } else {
-          square.piece.watches = calcWatches(square.piece);
+          square.piece.watches = calcWatches(square.piece, compboard);
         }
       }
     })

@@ -6,7 +6,6 @@ import compboard from "../board/compboard.js";
 import assignWatches from "../util/assignWatches.js";
 
 export default function(piece) {
-  refreshBoard();
   let possibleOffsets;
   if (piece.constructor == Pawn) possibleOffsets = { ...piece.offsets };
   else possibleOffsets = [...piece.offsets];
@@ -72,7 +71,7 @@ export default function(piece) {
 
           if (
             compboard[y_ax - 1][x_ax + 1] === null ||
-            compboard[y_ax - 1][x_ax + 1].piece.color == piece.color
+            compboard[y_ax - 1][x_ax + 1]?.piece?.color == piece.color
 					) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != 1
@@ -167,7 +166,8 @@ export default function(piece) {
         //implement en passant
       }
       if (possibleOffsets.capture.length === 1) possibleOffsets.capture = possibleOffsets.capture[0];
-    
+      if(piece.location[0] == 0 || piece.location[1] == 0) {
+      }
       return possibleOffsets;
     case Rook:
       if (y_ax == 7)

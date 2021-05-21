@@ -3,11 +3,14 @@ import move from "./move.js";
 import coordToLocation from "./coordToLocation.js";
 import coordToPiece from "./coordToPiece.js";
 import assignWatches from "../util/assignWatches.js";
+import calcChecks from "../calc/calcChecks.js";
+import refreshBoard from "./refreshBoard.js";
 
 export let moveCount = 0;
 export let turn = "Light";
 export default function makeMove(start, end) {
-	assignWatches();
+	refreshBoard();
+
 	if (coordToPiece(start).color == turn) {
 		let ret = move(coordToLocation(start).piece, end);
 		if (ret) {

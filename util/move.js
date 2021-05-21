@@ -1,13 +1,11 @@
 import calcMoves from "../calc/calcMoves.js";
 import alphaToCoord from "./alphaToCoord.js";
-import coordToPiece from "./coordToPiece.js";
-import {turn} from "./makeMove.js";
 import compboard from "../board/compboard.js";
 
 export default function move(piece, destination) {
 	let availableMoves = calcMoves(piece);
 	let atc = alphaToCoord(destination);
-
+	
 	if (atc) {
 		if (!availableMoves) return false;
 		if (

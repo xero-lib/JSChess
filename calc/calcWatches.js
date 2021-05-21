@@ -1,18 +1,13 @@
 //duplicate of calcOffsets except it counts own pieces. It can all be consolidated at some point.
 
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
-import refreshBoard from "../util/refreshBoard.js";
-import compboard from "../board/compboard.js";
-import assignWatches from "../util/assignWatches.js";
 
-export default function(piece) {
-  refreshBoard();
+export default function(piece, compboard) {
   let watches = [];
   let currentMove = [];
   let possibleOffsets;
   if (piece.constructor == Pawn) possibleOffsets = {...piece.offsets};
   else possibleOffsets = [...piece.offsets];
-  // console.log("HERE",piece.offsets.capture);
   let [y_ax, x_ax] = piece.location;
   let found = false;
   let distance = 0;

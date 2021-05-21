@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/xero-lib/JSChess/issues"
   },
-  "homepage": "https://github.com/xero-lib/JSChess#readme"
+  "homepage": "https://github.com/xero-lib/JSChess#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }
