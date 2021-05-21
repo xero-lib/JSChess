@@ -21,6 +21,8 @@ makeMove("g2", "g4");
 // console.log(turn)
 makeMove("h2", "h4");
 
+// console.log(compboard[0][0].piece)
+
 //test rook
 // makeMove("a1", "a3");
 // makeMove("a3", "a2");
@@ -29,5 +31,5 @@ makeMove("h2", "h4");
 // makeMove("a2", "a1");
 
 // compboard.forEach(row => row.forEach(square => {
-//   /*if(square.piece?.constructor.name == "Queen")*/ console.log(square.piece?.constructor.name, square.piece?.watches);
+//   if(square.piece?.constructor.name == "Rook") console.log(square.piece?.constructor.name, square.piece?.watches);
 // }))
