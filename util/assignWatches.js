@@ -3,7 +3,7 @@ import calcWatches from "../calc/calcWatches.js";
 import { Pawn } from "../data/classes.js";
 
 export default function() {
-  compboard.forEach(row => {
+  compboard.forEach((row) => {
     row.forEach((square) => {
       if(square.piece !== null) { //! Also needs to add own pieces to disallow king capturing a piece that is watched
         if(square.piece.constructor == Pawn) {
