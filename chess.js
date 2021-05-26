@@ -5,9 +5,9 @@ import makeMove from "./util/makeMove.js";
 
 //testing turn system
 // console.log(turn)
-makeMove("a2", "a4");
+makeMove("a2", "a4"); //! Everything is just broken.
 // console.log(turn)
-makeMove("a7", "a6"); //dark pawn cannot move?
+makeMove("a7", "a6"); 
 // console.log(turn)
 makeMove("c2", "c4");
 // console.log(turn)

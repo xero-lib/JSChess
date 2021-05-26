@@ -47,7 +47,7 @@ export default function possibleWatches(piece, move) {
         if(square.piece.constructor == Pawn) { //! complete pawn
 
         }
-        if(typeof square.piece.watches[0] == "object") {
+        if(Array.isArray(square.piece.watches[0])) {
           if(square.piece.watches.includes(dKingPos) && turn.toLowerCase() == "dark" ) return false;
           if(square.piece.watches.includes(lKingPos) && turn.toLowerCase() == "light") return false;
         }
@@ -57,7 +57,6 @@ export default function possibleWatches(piece, move) {
         }
       }
     }))
-
     //else
     return true;
 }
