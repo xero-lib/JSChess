@@ -1,22 +1,37 @@
 //todo fix rook, moving right, down... broken
 import _ from "lodash";
-import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
-import refreshBoard from "../util/refreshBoard.js";
-import compboard from "../board/compboard.js";
+import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
 import assignWatches from "../util/assignWatches.js";
+import refreshBoard  from "../util/refreshBoard.js" ;
+import compboard     from "../board/compboard.js"   ;
+import offsets       from "../data/offsets.js"      ;
 
 export default function(piece) {
-  let possibleOffsets;
-  if (piece.constructor == Pawn) possibleOffsets = _.cloneDeep(piece.offsets);
-  else possibleOffsets = _.cloneDeep(piece.offsets);
-  let [y_ax, x_ax] = piece.location;
-  let found = false;
-  let distance = 0;
 
+  let possibleOffsets,
+      [y_ax, x_ax] = piece?.location,
+      found = false,
+      distance = 0;
+  
   if (y_ax == undefined || x_ax == undefined) return null;
+      
+  // if (piece.constructor == Pawn) possibleOffsets = _.cloneDeep({...offsets.pawn});
+  switch(piece.constructor) {
+    case Knight: possibleOffsets = _.cloneDeep(offsets.knight); break;
+    case Bishop: possibleOffsets = _.cloneDeep(offsets.bishop); break;
+    case Queen : possibleOffsets = _.cloneDeep(offsets.queen ); break;
+    case Rook  : possibleOffsets = _.cloneDeep(offsets.rook  ); break;
+    case King  : possibleOffsets = _.cloneDeep(offsets.king  ); break;
+    case Pawn  :
+      if(piece.color.toLowerCase() == "dark") possibleOffsets = _.cloneDeep({...offsets.pawn.dark});
+      else possibleOffsets = _.cloneDeep({...offsets.pawn.light});
+      break;
+    }
 
   switch (piece.constructor) {
     case Pawn:
+      console.log("PO", possibleOffsets)
+
       //check for edge pawn
       if (x_ax === 0)
         possibleOffsets.capture = possibleOffsets.capture.filter(
@@ -167,7 +182,10 @@ export default function(piece) {
       }
       if (possibleOffsets.capture.length === 1) possibleOffsets.capture = possibleOffsets.capture[0];
       if(piece.location[0] == 0 || piece.location[1] == 0) {
+        //! Why is this empty. Fix it.
       }
+      
+
       return possibleOffsets;
     case Rook:
       if (y_ax == 7)
