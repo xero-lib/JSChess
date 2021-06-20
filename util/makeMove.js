@@ -2,7 +2,6 @@ import printBoard from "./printBoard.js";
 import move from "./move.js";
 import coordToLocation from "./coordToLocation.js";
 import coordToPiece from "./coordToPiece.js";
-import assignWatches from "../util/assignWatches.js";
 import calcChecks from "../calc/calcChecks.js";
 import refreshBoard from "./refreshBoard.js";
 
@@ -30,6 +29,8 @@ export default function makeMove(start, end) {
 		}
 
 	} else {
+		console.log("It is not this color's turn.");
+		printBoard();
 		return false;
 	}
 }
