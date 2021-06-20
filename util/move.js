@@ -1,13 +1,14 @@
 import calcMoves from "../calc/calcMoves.js";
 import alphaToCoord from "./alphaToCoord.js";
 import compboard from "../board/compboard.js";
+import coordCompare from "./coordCompare.js";
 
 export default function move(piece, destination) {
   let availableMoves = piece.moves;
   let atc = alphaToCoord(destination);
   let valid;
   availableMoves.forEach((move) => {
-    if (move[0] == atc[0] && move[1] == atc[1]) valid = true;
+    if (coordCompare(move, atc)) valid = true;
   });
   // console.log("Moves:", piece.moves)
 

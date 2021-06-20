@@ -4,13 +4,15 @@ import compboard from "../board/compboard.js";
 import { turn } from "../util/makeMove.js";
 import { King, Pawn } from "../data/classes.js";
 import calcWatches from "./calcWatches.js";
+import printBoard from "../util/printBoard.js";
+import coordToPiece from "../util/coordToPiece.js";
 
 //go through available offsets for a given piece
 export default function calcChecks(piece, in_move) {
   //check if each offset for a piece will result in a new watches variable for any opponent piece that will cause the king to be watched
 
   let tstart = _.cloneDeep(piece.location),
-      tmove = _.cloneDeep(in_move),
+    tmove = _.cloneDeep(in_move),
     tempBoard = _.cloneDeep(compboard),
     tpiece = _.cloneDeep(piece),
     lKingPos,
@@ -19,7 +21,7 @@ export default function calcChecks(piece, in_move) {
   /*
     GENERATE MOVE
   */
-
+  if(tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) return false; 
   //move requested piece to requested location on tempBoard
   tempBoard[tstart[0]][tstart[1]].piece = null;
   tempBoard[tmove[0]][tmove[1]].piece = tpiece;
@@ -62,9 +64,11 @@ export default function calcChecks(piece, in_move) {
       //for each square on the tempBoard
       if (square.piece !== null && square.piece.color.toLowerCase() !== turn.toLowerCase()) { //if there's a piece on that square
         if (Array.isArray(square.piece.watches[0])) {
+          console.trace(square.piece.watches)
           //if watches contains multiple items
           if (turn.toLowerCase() == "dark")
             isCheck = square.piece.watches.some((move) => {
+              console.log(move, "\n", dKingPos);
               return coordCompare(move, dKingPos)
             });
           //should check if every possible move by tpiece results in a self check
