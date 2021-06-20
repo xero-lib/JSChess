@@ -1,4 +1,3 @@
-//todo confirm that offset filters for each piece work
 import coordToPiece from "./util/coordToPiece.js";
 import makeMove from "./util/makeMove.js";
 import { turn } from "./util/makeMove.js";

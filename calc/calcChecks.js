@@ -1,6 +1,6 @@
 import _              from "lodash"                 ;
 import compboard      from "../board/compboard.js"  ;
-import turn           from "../util/makeMove.js"    ;
+import { turn }       from "../util/makeMove.js"    ;
 import { King, Pawn } from "../data/classes.js"     ;
 import calcWatches    from "./calcWatches.js"       ;
 
@@ -40,30 +40,37 @@ export default function calcChecks(piece, move) {
     }))
 
     //check if watches hit same color king, return false
+    let isNotCheck = true;
     tempBoard.forEach((row) => row.forEach((square) => {
       if(square.piece !== null) {
-        if(square.piece.constructor == Pawn) { //! complete pawn
-
-        }
         if(Array.isArray(square.piece.watches[0])) {
-          if(square.piece.watches.includes(dKingPos) && turn.toLowerCase() == "dark" ) return false;
-          if(square.piece.watches.includes(lKingPos) && turn.toLowerCase() == "light") return false;
-        }
-        else {
-          if(square.piece.watches == dKingPos && turn.toLowerCase() == "dark" ) return false;
-          if(square.piece.watches == lKingPos && turn.toLowerCase() == "light") return false;
+          if(turn.toLowerCase() == "dark") {
+            square.piece.watches.forEach((move) => {
+              (move[0] == dKingPos[0] && move[1] == dKingPos[1]) ? isNotCheck = false : isNotCheck = true;
+              piece.constructor === Pawn ? console.log(tpiece.constructor, move, isNotCheck) : null;
+              // console.log(isNotCheck);
+            });
+          } else {
+            square.piece.watches.forEach((move) => 
+              ((move[0] == lKingPos[0] && move[1] == lKingPos[1]) && turn.toLowerCase() == "light") ? isNotCheck = false : isNotCheck = true
+            );
+          }
+        } else {
+          if(square.piece.watches == dKingPos && turn.toLowerCase() == "dark" ) isNotCheck = false;
+          if(square.piece.watches == lKingPos && turn.toLowerCase() == "light") isNotCheck = false;
         }
       }
     }))
     //else
-    return true;
+    console.log(tmove, isNotCheck)
+    return isNotCheck;
 }
 
 export const filterChecks = () => {
   //iterate over every piece on the board and run it through this with move being every available offset.
   compboard.forEach((row, i) => row.forEach((square, j) => {
     if(square.piece !== null) {
-      compboard[i][j].piece.watches = square.piece.watches.filter((move) => calcChecks(square.piece, move));
+      compboard[i][j].piece.moves= square.piece.moves.filter((move) => calcChecks(square.piece, move));
     }
   }))
   //if a given offset would result in check, filter it

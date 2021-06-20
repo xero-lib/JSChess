@@ -3,23 +3,17 @@ import alphaToCoord from "./alphaToCoord.js";
 import compboard from "../board/compboard.js";
 
 export default function move(piece, destination) {
-	let availableMoves = calcMoves(piece);
+	let availableMoves = piece.moves;
 	let atc = alphaToCoord(destination);
+	let valid; 
+	availableMoves.forEach((move) => {if (move[0] == atc[0] && move[1] == atc[1]) valid = true;});
+	console.log("Moves:", piece.moves)
 	
-	if (atc) {
-		if (!availableMoves) return false;
-		if (
-			availableMoves.some(
-				(move) => move[0] == atc[0] && move[1] == atc[1]
-			)
-		) {
-			compboard[atc[0]][atc[1]].piece = piece;
-			compboard[atc[0]][atc[1]].piece.hasMoved = true;
-			compboard[piece.location[0]][piece.location[1]].piece = null;
-			return true;
-		} else {
-			return false;
-		}
+	if (atc && valid) {
+		compboard[atc[0]][atc[1]].piece = piece;
+		compboard[atc[0]][atc[1]].piece.hasMoved = true;
+		compboard[piece.location[0]][piece.location[1]].piece = null;
+		return true;
 	}
 
 	if (
