@@ -19,8 +19,11 @@ export default function calcChecks(piece, in_move) {
     dKingPos;
 
   /*
+
     GENERATE MOVE
+  
   */
+ 
   if(tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) return false; 
   //move requested piece to requested location on tempBoard
   tempBoard[tstart[0]][tstart[1]].piece = null;
@@ -54,7 +57,9 @@ export default function calcChecks(piece, in_move) {
   );
 
   /*
-    CALC CHECKS FOR AFTER MOVE
+
+    CALC CHECKS FOR AFTER ARTIFICIAL MOVE
+  
   */
 
   //check if watches hit same color king
@@ -64,20 +69,11 @@ export default function calcChecks(piece, in_move) {
       //for each square on the tempBoard
       if (square.piece !== null && square.piece.color.toLowerCase() !== turn.toLowerCase()) { //if there's a piece on that square
         if (Array.isArray(square.piece.watches[0])) {
-          console.trace(square.piece.watches)
           //if watches contains multiple items
-          if (turn.toLowerCase() == "dark")
-            isCheck = square.piece.watches.some((move) => {
-              console.log(move, "\n", dKingPos);
-              return coordCompare(move, dKingPos)
-            });
-          //should check if every possible move by tpiece results in a self check
-          else
-            isCheck = square.piece.watches.some((move) => {
-              return coordCompare(move, lKingPos)
-            }); //^
+          if (turn.toLowerCase() == "dark") isCheck = square.piece.watches.some((move) => coordCompare(move, dKingPos));
+          else isCheck = square.piece.watches.some((move) => coordCompare(move, lKingPos));
         } else {
-          isCheck =
+          isCheck = 
             coordCompare(square.piece.watches, dKingPos) &&
             turn.toLowerCase() == "dark";
           isCheck =
