@@ -1,10 +1,7 @@
 import { Pawn } from "../data/classes.js";
-import refreshBoard from "../util/refreshBoard.js";
 import calcOffsets from "./calcOffsets.js";
 
 export default function calcMoves(piece) {
-	refreshBoard();
-
 	if (piece === null) return;
 
 	let [y_ax, x_ax] = piece.location;

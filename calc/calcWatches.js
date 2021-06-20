@@ -29,13 +29,13 @@ export default function(piece, compboard = board) {
     case Pawn:
       //check for edge pawn
       if (x_ax === 0) {
-        if(piece.color.toLowerCase() == "dark" ) return([piece.location[0]-1, piece.location[1]+1]);
-        if(piece.color.toLowerCase() == "light") return([piece.location[0]+1, piece.location[1]+1]);
+        if(piece.color.toLowerCase() == "dark" ) return([[piece.location[0]-1, piece.location[1]+1]]);
+        if(piece.color.toLowerCase() == "light") return([[piece.location[0]+1, piece.location[1]+1]]);
       }
 
       if (x_ax === 7) {
-        if(piece.color.toLowerCase() == "dark" ) return([piece.location[0]-1, piece.location[1]-1]);
-        if(piece.color.toLowerCase() == "light") return([piece.location[0]+1, piece.location[1]-1]);  
+        if(piece.color.toLowerCase() == "dark" ) return([[piece.location[0]-1, piece.location[1]-1]]);
+        if(piece.color.toLowerCase() == "light") return([[piece.location[0]+1, piece.location[1]-1]]);  
       }
 
       //if not edge pawn

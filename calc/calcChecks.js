@@ -1,39 +1,37 @@
 import _              from "lodash"                 ;
 import compboard      from "../board/compboard.js"  ;
 import turn           from "../util/makeMove.js"    ;
-import refreshBoard   from "../util/refreshBoard.js";
 import { King, Pawn } from "../data/classes.js"     ;
 import calcWatches    from "./calcWatches.js"       ;
-import alphaToCoord   from "../util/alphaToCoord.js";
 
 //go through available offsets for a given piece
-export default function possibleWatches(piece, move) {
-    refreshBoard();
-    
+export default function calcChecks(piece, move) {    
     //check if each offset for a piece will result in a new watches variable for any opponent piece that will cause the king to be watched
     
-    let tmove       = _.cloneDeep(alphaToCoord(move));
-    let tempBoard   = _.cloneDeep(compboard         );
-    let tpiece      = _.cloneDeep(piece             );
-    let checks      = [];
-    let badWatches  = [];
-    let lKingPos;
-    let dKingPos;
+    let 
+        tstart      = _.cloneDeep(piece.location),
+        tmove       = _.cloneDeep(move     ),
+        tempBoard   = _.cloneDeep(compboard),
+        tpiece      = _.cloneDeep(piece    ),
+        checks      = [],
+        badWatches  = [],
+        lKingPos,
+        dKingPos;
 
     //move requested piece to requested location on tempBoard
-    tempBoard[tpiece.location[0]][tpiece.location[1]].piece = null;
+    tempBoard[tstart[0]][tstart[1]].piece = null;
     tempBoard[tmove[0]][tmove[1]].piece = tpiece;
     tpiece.location = tmove;
 
     //calc watches for that tempBoard
-    tempBoard.forEach((row) => row.forEach((square) => {
+    tempBoard.forEach((row, i) => row.forEach((square, j) => {
       if(square.piece !== null) {
-        if(square.piece.constructor === Pawn) square.piece.watches = _.cloneDeep([...calcWatches(square.piece)]);
-        else square.piece.watches = calcWatches(square.piece, tempBoard);
+        if(square.piece.constructor === Pawn) tempBoard[i][j].piece.watches = _.cloneDeep([...calcWatches(square.piece)]);
+        else tempBoard[i][j].piece.watches = calcWatches(square.piece, tempBoard);
       }
     }))
 
-    //get king position after move //! Can skip if king didn't move
+    //get king position after move
     tempBoard.forEach((row) => row.forEach((square) => {
       if(square.piece !== null && square.piece.constructor === King) {
         if(square.piece.color.toLowerCase() == "dark" ) dKingPos = square.piece.location;
@@ -61,12 +59,12 @@ export default function possibleWatches(piece, move) {
     return true;
 }
 
-//iterate over every piece on the board and run it through this with move being every available offset.
-compboard.forEach((row) => row.forEach((square) => {
-  if(square.piece !== null) {
-    if(square.piece.constructor == Pawn) { //! complete pawn
-
-    } else square.piece.watches = square.piece.watches.filter((move) => possibleWatches(square.piece, move));
-  }
-}))
-//if a given offset would result in check, filter it
+export const filterChecks = () => {
+  //iterate over every piece on the board and run it through this with move being every available offset.
+  compboard.forEach((row, i) => row.forEach((square, j) => {
+    if(square.piece !== null) {
+      compboard[i][j].piece.watches = square.piece.watches.filter((move) => calcChecks(square.piece, move));
+    }
+  }))
+  //if a given offset would result in check, filter it
+}

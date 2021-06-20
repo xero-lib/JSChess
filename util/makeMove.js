@@ -2,7 +2,6 @@ import printBoard from "./printBoard.js";
 import move from "./move.js";
 import coordToLocation from "./coordToLocation.js";
 import coordToPiece from "./coordToPiece.js";
-import calcChecks from "../calc/calcChecks.js";
 import refreshBoard from "./refreshBoard.js";
 
 export let moveCount = 0;

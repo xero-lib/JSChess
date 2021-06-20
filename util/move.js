@@ -1,12 +1,10 @@
 import calcMoves from "../calc/calcMoves.js";
 import alphaToCoord from "./alphaToCoord.js";
 import compboard from "../board/compboard.js";
-import calcChecks from "../calc/calcChecks.js";
 
 export default function move(piece, destination) {
 	let availableMoves = calcMoves(piece);
 	let atc = alphaToCoord(destination);
-	calcChecks(piece, destination);
 	
 	if (atc) {
 		if (!availableMoves) return false;

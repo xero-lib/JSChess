@@ -1,7 +1,6 @@
 //todo fix rook, moving right, down... broken
 import _ from "lodash";
 import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
-import assignWatches from "../util/assignWatches.js";
 import refreshBoard  from "../util/refreshBoard.js" ;
 import compboard     from "../board/compboard.js"   ;
 import offsets       from "../data/offsets.js"      ;
@@ -106,7 +105,6 @@ export default function(piece) {
         //! implement en passant
       }
       if (possibleOffsets.capture.length === 1) possibleOffsets.capture = possibleOffsets.capture[0];
-      
       return possibleOffsets;
     case Rook:
       if (y_ax == 7) possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0); else

@@ -1,6 +1,7 @@
 import board from "../board/compboard.js";
 import calcOffsets from "../calc/calcOffsets.js";
 import calcWatches from "../calc/calcWatches.js";
+import { filterChecks } from "../calc/calcChecks.js";
 
 export default function refreshBoard(compboard = board) {
 	for (let y = 0; y < 8; y++) {
@@ -13,4 +14,5 @@ export default function refreshBoard(compboard = board) {
 			}
 		}
 	}
+	filterChecks();
 }
