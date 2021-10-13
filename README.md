@@ -1,7 +1,5 @@
 # JSChess
 
----
-
 ## A JavaScript chess game.
 
-# Status: Broken
+# Status: Working! Missing en passant.
