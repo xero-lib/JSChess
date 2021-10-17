@@ -23,8 +23,8 @@ export default function calcChecks(piece, in_move) {
     GENERATE MOVE
   
   */
- 
-  if(tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) return false; 
+
+  if (tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) return false;
   //move requested piece to requested location on tempBoard
   tempBoard[tstart[0]][tstart[1]].piece = null;
   tempBoard[tmove[0]][tmove[1]].piece = tpiece;
@@ -67,13 +67,23 @@ export default function calcChecks(piece, in_move) {
   tempBoard.forEach((row) =>
     row.forEach((square) => {
       //for each square on the tempBoard
-      if (square.piece !== null && square.piece.color.toLowerCase() !== turn.toLowerCase()) { //if there's a piece on that square
+      if (
+        square.piece !== null &&
+        square.piece.color.toLowerCase() !== turn.toLowerCase()
+      ) {
+        //if there's a piece on that square
         if (Array.isArray(square.piece.watches[0])) {
           //if watches contains multiple items
-          if (turn.toLowerCase() == "dark") isCheck = square.piece.watches.some((move) => coordCompare(move, dKingPos));
-          else isCheck = square.piece.watches.some((move) => coordCompare(move, lKingPos));
+          if (turn.toLowerCase() == "dark")
+            isCheck = square.piece.watches.some((move) =>
+              coordCompare(move, dKingPos)
+            );
+          else
+            isCheck = square.piece.watches.some((move) =>
+              coordCompare(move, lKingPos)
+            );
         } else {
-          isCheck = 
+          isCheck =
             coordCompare(square.piece.watches, dKingPos) &&
             turn.toLowerCase() == "dark";
           isCheck =
@@ -92,7 +102,9 @@ export const filterChecks = () => {
   compboard.forEach((row, i) =>
     row.forEach((square, j) => {
       if (square.piece !== null) {
-        compboard[i][j].piece.moves = square.piece.moves.filter((move) => calcChecks(square.piece, move));
+        compboard[i][j].piece.moves = square.piece.moves.filter((move) =>
+          calcChecks(square.piece, move)
+        );
       }
     })
   );
