@@ -1,7 +1,6 @@
 //todo fix rook, moving right, down... broken
 import _ from "lodash";
 import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
-import refreshBoard from "../util/refreshBoard.js";
 import compboard from "../board/compboard.js";
 import offsets from "../data/offsets.js";
 
@@ -13,28 +12,18 @@ export default function (piece) {
 
   if (y_ax == undefined || x_ax == undefined) return null;
 
-  // if (piece.constructor == Pawn) possibleOffsets = _.cloneDeep({...offsets.pawn});
   switch (piece.constructor) {
-    case Knight:
-      possibleOffsets = _.cloneDeep(offsets.knight);
-      break;
-    case Bishop:
-      possibleOffsets = _.cloneDeep(offsets.bishop);
-      break;
-    case Queen:
-      possibleOffsets = _.cloneDeep(offsets.queen);
-      break;
-    case Rook:
-      possibleOffsets = _.cloneDeep(offsets.rook);
-      break;
-    case King:
-      possibleOffsets = _.cloneDeep(offsets.king);
-      break;
     case Pawn:
-      piece.color.toLowerCase() == "dark"
-        ? (possibleOffsets = _.cloneDeep({ ...offsets.pawn.dark }))
-        : (possibleOffsets = _.cloneDeep({ ...offsets.pawn.light }));
+      possibleOffsets = _.cloneDeep({
+        ...(piece.color.toLowerCase() == "dark"
+          ? offsets.pawn.dark
+          : offsets.pawn.light),
+      });
       break;
+    default:
+      possibleOffsets = _.cloneDeep(
+        offsets[piece.constructor.name.toLowerCase()]
+      );
   }
 
   switch (piece.constructor) {

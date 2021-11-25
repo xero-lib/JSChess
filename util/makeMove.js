@@ -9,7 +9,7 @@ export let turn = "Light";
 export default function makeMove(start, end) {
   refreshBoard();
 
-  if (coordToPiece(start).color == turn) {
+  if (coordToPiece(start)?.color == turn) {
     let ret = move(coordToLocation(start).piece, end);
     if (ret) {
       moveCount++;
