@@ -1,3 +1,5 @@
+//todo refactor for default pos and x pos
+
 import offsets from "./offsets.js";
 
 export class King {
@@ -6,6 +8,7 @@ export class King {
     this.defaultPos = color.toLowerCase() == "dark" ? [7, 4] : [0, 4];
   }
 
+  location = this.defaultPos;
   watches = [];
   offsets = offsets.king;
   availableOffsets = [];
@@ -19,7 +22,7 @@ export class Queen {
     this.color = color;
     this.defaultPos = color.toLowerCase() == "dark" ? [7, 3] : [0, 3];
   }
-
+  location = this.defaultPos;
   watches = [];
   offsets = offsets.queen;
   availableOffsets = [];
@@ -28,20 +31,21 @@ export class Queen {
 }
 
 export class Bishop {
-  constructor(color, side) {
+  constructor(color, side = null) {
     this.color = color;
     this.side = side;
     this.defaultPos =
       color.toLowerCase() == "dark"
-        ? side.toLowerCase() == "queen"
+        ? side?.toLowerCase() == "queen"
           ? [7, 2]
           : [7, 5]
-        : side.toLowerCase() == "queen"
+        : side?.toLowerCase() == "queen"
         ? [0, 2]
         : [0, 5];
     // this.watches = ()
   }
 
+  location = this.defaultPos;
   watches = [];
   offsets = offsets.bishop;
   availableOffsets = [];
@@ -55,14 +59,15 @@ export class Knight {
     this.side = side;
     this.defaultPos =
       color.toLowerCase() == "dark"
-        ? side.toLowerCase() == "queen"
+        ? side?.toLowerCase() == "queen"
           ? [7, 1]
           : [7, 6]
-        : side.toLowerCase() == "queen"
+        : side?.toLowerCase() == "queen"
         ? [0, 1]
         : [0, 6];
   }
 
+  location = this.defaultPos;
   watches = [];
   offsets = offsets.knight;
   availableOffsets = [];
@@ -76,14 +81,15 @@ export class Rook {
     this.side = side;
     this.defaultPos =
       color.toLowerCase() == "dark"
-        ? side.toLowerCase() == "queen"
+        ? side?.toLowerCase() == "queen"
           ? [7, 0]
           : [7, 7]
-        : side.toLowerCase() == "queen"
+        : side?.toLowerCase() == "queen"
         ? [0, 0]
         : [0, 7];
   }
 
+  location = this.defaultPos;
   watches = [];
   offsets = offsets.rook;
   availableOffsets = [];
@@ -99,43 +105,44 @@ export class Pawn {
     this.offsets =
       color.toLowerCase() == "dark" ? offsets.pawn.dark : offsets.pawn.light;
     this.defaultPos =
-      color.toLowerCase() == "dark"
-        ? file.toLowerCase() == "a"
+      color.toLowerCase() == "dark" ?
+            file === 0 || (isNaN(file) && file.toLowerCase() == "a")
           ? [6, 0]
-          : file.toLowerCase() == "b"
+          : file === 1 || (isNaN(file) && file.toLowerCase() == "b")
           ? [6, 1]
-          : file.toLowerCase() == "c"
+          : file === 2 || (isNaN(file) && file.toLowerCase() == "c")
           ? [6, 2]
-          : file.toLowerCase() == "d"
+          : file === 3 || (isNaN(file) && file.toLowerCase() == "d")
           ? [6, 3]
-          : file.toLowerCase() == "e"
+          : file === 4 || (isNaN(file) && file.toLowerCase() == "e")
           ? [6, 4]
-          : file.toLowerCase() == "f"
+          : file === 5 || (isNaN(file) && file.toLowerCase() == "f")
           ? [6, 5]
-          : file.toLowerCase() == "g"
+          : file === 6 || (isNaN(file) && file.toLowerCase() == "g")
           ? [6, 6]
-          : file.toLowerCase() == "h"
+          : file === 7 || (isNaN(file) && file.toLowerCase() == "h")
           ? [6, 7]
           : null
-        : file.toLowerCase() == "a"
+        : file === 0 || (isNaN(file) && file.toLowerCase() == "a")
         ? [1, 0]
-        : file.toLowerCase() == "b"
+        : file === 1 || (isNaN(file) && file.toLowerCase() == "b")
         ? [1, 1]
-        : file.toLowerCase() == "c"
+        : file === 2 || (isNaN(file) && file.toLowerCase() == "c")
         ? [1, 2]
-        : file.toLowerCase() == "d"
+        : file === 3 || (isNaN(file) && file.toLowerCase() == "d")
         ? [1, 3]
-        : file.toLowerCase() == "e"
+        : file === 4 || (isNaN(file) && file.toLowerCase() == "e")
         ? [1, 4]
-        : file.toLowerCase() == "f"
+        : file === 5 || (isNaN(file) && file.toLowerCase() == "f")
         ? [1, 5]
-        : file.toLowerCase() == "g"
+        : file === 6 || (isNaN(file) && file.toLowerCase() == "g")
         ? [1, 6]
-        : file.toLowerCase() == "h"
+        : file === 7 || (isNaN(file) && file.toLowerCase() == "h")
         ? [1, 7]
         : null;
   }
 
+  location = this.defaultPos;
   watches = [];
   availableOffsets = [];
   value = [1, 3, 4, 8];

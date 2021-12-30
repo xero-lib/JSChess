@@ -68,7 +68,7 @@ export default function (piece, compboard = board) {
             [piece.location[0] - 1, piece.location[1] - 1],
           ];
         default:
-          return false;
+          return null;
       }
       return; //just here so that the code colapses properly and doesn't drive me insane.
     case Rook:

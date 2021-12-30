@@ -1,17 +1,21 @@
 let colorboard = new Array(8);
-for (let i = 0; i < 8; i++) {
-  colorboard[i] = new Array(8);
-}
+for (let i = 0; i < 8; i++) colorboard[i] = new Array(8);
 
 for (let i = 0; i < 8; i += 2) {
-  for (let y = 0; y < 8; y += 2) {
-    colorboard[i][y] = "#";
-    colorboard[i][y + 1] = " ";
+  for (let j = 0; j < 8; j += 2) {
+    colorboard[i][j] = "#";
+    colorboard[i][j + 1] = " ";
 
-    colorboard[i + 1][y] = " ";
-    colorboard[i + 1][y + 1] = "#";
+    colorboard[i + 1][j] = " ";
+    colorboard[i + 1][j + 1] = "#";
   }
 }
+
+// for (let i = 0; i < 8; i++) {
+//   for (let j = 0; j < 8; j++) {
+//     colorboard[i][j] = (i ^ j) & 1 == 1 ? ' ' : '#';
+//   }
+// }
 
 export default colorboard;
 

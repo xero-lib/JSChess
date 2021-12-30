@@ -9,19 +9,30 @@ export default function calcMoves(piece) {
 
 	let possibleMoves = [];
 
-	if (availableOffsets.length == 0) return [];
+	if (availableOffsets.length == 0) {
+		return [];
+	}
 	if (piece.constructor == Pawn) {
 		let allMoves = [];
 
 
-		if (piece.hasMoved) { availableOffsets.first = null; }
-		else if (!piece.hasMoved && availableOffsets.first !== null) { allMoves.push(availableOffsets.first, availableOffsets.move); }
-		else if (piece.hasMoved && availableOffsets.move) { allMoves.push(availableOffsets.move); }
-		else if (availableOffsets.capture[0])
-			if (availableOffsets.capture[0].length > 1) { allMoves.push(...availableOffsets.capture); }
-			else { allMoves.push(availableOffsets.capture); }
-		else if (typeof availableOffsets.capture[0] == "number") { allMoves.push(availableOffsets.capture); }
-		else { availableOffsets.capture = null; }
+		if (piece.hasMoved) {
+			availableOffsets.first = null;
+		} else if (!piece.hasMoved && availableOffsets.first !== null) {
+			allMoves.push(availableOffsets.first, availableOffsets.move);
+		} else if (piece.hasMoved && availableOffsets.move) {
+			allMoves.push(availableOffsets.move);
+		} else if (availableOffsets.capture[0]) {
+			if (availableOffsets.capture[0].length > 1) {
+				allMoves.push(...availableOffsets.capture);
+			} else {
+				allMoves.push(availableOffsets.capture);
+			}
+		} else if (typeof availableOffsets.capture[0] == "number") {
+			allMoves.push(availableOffsets.capture);
+		} else {
+			availableOffsets.capture = null;
+		}
 
 		allMoves.forEach((offset) => {
 			if (offset.length > 0) {

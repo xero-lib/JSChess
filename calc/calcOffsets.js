@@ -3,6 +3,7 @@ import _ from "lodash";
 import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
 import compboard from "../board/compboard.js";
 import offsets from "../data/offsets.js";
+import coordCompare from "../util/coordCompare.js";
 
 export default function (piece) {
   let possibleOffsets,
@@ -748,19 +749,19 @@ export default function (piece) {
       return possibleOffsets;
     case King:
       //check for corners
-      if ([y_ax, x_ax] == [0, 0])
+      if (coordCompare([y_ax, x_ax], [0, 0]))
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] >= 0
         );
-      else if ([y_ax, x_ax] == [0, 7])
+      else if (coordCompare([y_ax, x_ax], [0, 7]))
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] <= 0
         );
-      else if ([y_ax, x_ax] == [7, 0])
+      else if (coordCompare([y_ax, x_ax], [7, 0]))
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[1] >= 0
         );
-      else if ([y_ax, x_ax] == [7, 7])
+      else if (coordCompare([y_ax, x_ax], [7, 7]))
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[0] <= 0
         );
@@ -820,7 +821,7 @@ export default function (piece) {
       }
 
       //check for piece up/right
-      if ([y_ax, x_ax] != [7, 7] && y_ax != 7 && x_ax != 7) {
+      if (y_ax != 7 && x_ax != 7) {
         if (y_ax == 0) {
           possibleOffsets = possibleOffsets.filter((move) => move[0] < 0);
         } else if (x_ax == 0) {
@@ -835,7 +836,7 @@ export default function (piece) {
       }
 
       //check for piece up/left
-      if ([y_ax, x_ax] != [7, 0] && y_ax != 7 && x_ax != 0) {
+      if (y_ax != 7 && x_ax != 0) {
         if (y_ax == 0) {
           possibleOffsets = possibleOffsets.filter((move) => move[0] < 0);
         } else if (x_ax == 0) {
@@ -850,7 +851,7 @@ export default function (piece) {
       }
 
       //check for piece down/right
-      if ([y_ax, x_ax] != [0, 7]) {
+      if (y_ax != 0 && x_ax != 7) {
         if (y_ax == 0) {
           possibleOffsets = possibleOffsets.filter((move) => move[0] < 0);
         } else if (x_ax == 0) {
