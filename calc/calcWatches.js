@@ -441,7 +441,7 @@ export default function (piece, compboard = board) {
       }
 
       //filter down/left
-      if ([y_ax, x_ax] != [0, 0]) {
+      if ([y_ax, x_ax] != [0, 0]) { // impl coordCompare
         distance = 0;
         found = false;
 

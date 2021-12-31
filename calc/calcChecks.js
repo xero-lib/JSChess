@@ -4,7 +4,6 @@ import calcWatches from "./calcWatches.js";
 import { turn } from "../util/makeMove.js";
 import compboard from "../board/compboard.js";
 import { King, Pawn } from "../data/classes.js";
-import pieces from "../data/pieces.js";
 import coordCompare from "../util/coordCompare.js";
 
 //go through available offsets for a given piece
@@ -16,8 +15,22 @@ export default function calcChecks(piece, in_move) {
     tmove = _.cloneDeep(in_move),
     tempBoard = _.cloneDeep(compboard),
     tpiece = _.cloneDeep(piece),
-    dKingPos = _.cloneDeep(pieces.dark[0].location),
-    lKingPos = _.cloneDeep(pieces.light[0].location)
+    dKingPos,
+    lKingPos;
+
+    compboard.forEach((row, y) => {
+      row.forEach((square, x) => {
+        if (square.piece && square.piece.constructor === King) {
+          square.piece.color == "Dark"
+            ? dKingPos = [y, x]
+            : lKingPos = [y, x];
+        }
+      })
+    })
+
+  // dKingPos = dKingPos ? dKingPos : {
+  //   compboard
+  // }
 
   /* GENERATE MOVE */
   if (tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) {
@@ -27,12 +40,12 @@ export default function calcChecks(piece, in_move) {
   tempBoard[tstart[0]][tstart[1]].piece = null;
   tempBoard[tmove[0]][tmove[1]].piece = tpiece;
   tpiece.location = tmove;
-
+  
   if (tpiece.constructor === King) {
     if (tpiece.color.toLowerCase() == "Dark") {
-      dKingPos = tmove;
+      dKingPos = tmove ? tmove : dKingPos;
     } else {
-      lKingPos = tmove;
+      lKingPos = tmove ? tmove : lKingPos;
     }
   }
 
@@ -65,9 +78,9 @@ export default function calcChecks(piece, in_move) {
         //if there's a piece on that square
         if (Array.isArray(square.piece.watches[0])) {
           //if watches contains multiple items
-          isCheck = square.piece.watches.some((move) =>
-            coordCompare(move, turn.toLowerCase() == "dark" ? dKingPos : lKingPos)
-          );
+          isCheck = square.piece.watches.some((move) => {
+            return move != null ?  coordCompare(move, turn.toLowerCase() == "dark" ? dKingPos : lKingPos) : null ;
+          });
         } else {
           isCheck =
             coordCompare(square.piece.watches, dKingPos) && turn.toLowerCase() == "dark" ||

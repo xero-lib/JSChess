@@ -5,11 +5,11 @@ export default function calcMoves(piece) {
 	if (piece === null) return;
 
 	let [y_ax, x_ax] = piece.location;
-	let availableOffsets = calcOffsets(piece);
+	let ao = calcOffsets(piece); //available offsets
 
-	let possibleMoves = [];
+	let pm = []; //possible moves
 
-	if (availableOffsets.length == 0) {
+	if (ao.length == 0) {
 		return [];
 	}
 	if (piece.constructor == Pawn) {
@@ -17,37 +17,39 @@ export default function calcMoves(piece) {
 
 
 		if (piece.hasMoved) {
-			availableOffsets.first = null;
-		} else if (!piece.hasMoved && availableOffsets.first !== null) {
-			allMoves.push(availableOffsets.first, availableOffsets.move);
-		} else if (piece.hasMoved && availableOffsets.move) {
-			allMoves.push(availableOffsets.move);
-		} else if (availableOffsets.capture[0]) {
-			if (availableOffsets.capture[0].length > 1) {
-				allMoves.push(...availableOffsets.capture);
+			ao.first = null;
+		} else if (!piece.hasMoved && ao.first !== null) {
+			allMoves.push(ao.first, ao.move);
+		} else if (piece.hasMoved && ao.move) {
+			allMoves.push(ao.move);
+		} else if (ao.capture[0]) {
+			if (ao.capture[0].length > 1) {
+				allMoves.push(...ao.capture);
 			} else {
-				allMoves.push(availableOffsets.capture);
+				allMoves.push(ao.capture);
 			}
-		} else if (typeof availableOffsets.capture[0] == "number") {
-			allMoves.push(availableOffsets.capture);
+		} else if (typeof ao.capture[0] == "number") {
+			allMoves.push(ao.capture);
 		} else {
-			availableOffsets.capture = null;
+			ao.capture = null;
 		}
-
-		allMoves.forEach((offset) => {
+        
+        allMoves = allMoves.filter((m) => m != null);
+        
+		allMoves.forEach((offset) => { 
 			if (offset.length > 0) {
-				possibleMoves.push([y_ax + offset[0], x_ax + offset[1]]);
+				pm.push([y_ax + offset[0], x_ax + offset[1]]);
 			}
 		});
 	} else {
-		availableOffsets.forEach((offset, _idx, array) => {
+		ao.forEach((offset, _idx, array) => {
 			if (offset.length > 1) {
-				possibleMoves.push([y_ax + offset[0], x_ax + offset[1]]);
+				pm.push([y_ax + offset[0], x_ax + offset[1]]);
 			} else {
-				possibleMoves.push(array);
+				pm.push(array);
 			}
 		});
 	}
 
-	return possibleMoves;
+	return pm;
 }

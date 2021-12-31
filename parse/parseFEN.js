@@ -12,39 +12,38 @@ export default function (FEN_string) {
     rows.forEach((row, y) => {
         let buffer = 0;
         row.split('').forEach((item, x) => {
+            x = 7 - x;
             if (isNaN(item)) {
-                process.stdout.write(' ' + item);
+                // process.stdout.write(' ' + item);
                 let color = letterToColor(item);
                 if (!color) return false;
                 let Piece = letterToPiece(item);
                 if (Piece === Pawn) {
                     if (
-                        (color === "Light" && y == 1) ||
-                        (color === "Dark" && y == 6)
+                        (color === "Light" && y == 6) ||
+                        (color === "Dark" && y == 1)
                     ) {
-                        compboard[y][x+buffer].piece = new Piece(color, x);
-                        // console.log(compboard[y][x].piece.color, color, item)
-                        compboard[y][x+buffer].piece.hasMoved = false;
+                        compboard[y][x-buffer].piece = new Piece(color, x);
+                        compboard[y][x-buffer].piece.hasMoved = false;
                     } else {
-                        compboard[y][x+buffer].piece = new Piece(color, x);
+                        compboard[y][x-buffer].piece = new Piece(color, x);
                     }
                 } else {
-                    compboard[y][x+buffer].piece = new Piece(color);
+                    compboard[y][x-buffer].piece = new Piece(color);
                 }
             } else {
                 let space = Number.parseInt(item);
                 buffer += space-1;
                 for (let i = 0; i < space; i++) {
-                    compboard[y][x+i].piece = null;
-                    process.stdout.write(' ' + ((y + i ^ x) & 1 == 1 ? '#' : " "))
-                    // process.stdout.write(' ' + compboard[y][x-i].color)
+                    compboard[y][x-i].piece = null;
+                    // process.stdout.write(' ' + ((y + i ^ x) & 1 == 1 ? ' ' : '#'))
                 }
             }
         });
-        console.log()
+        // console.log()
     });
-    // refreshBoard();
-    // printBoard();
+    refreshBoard();
+    printBoard();
 }
 
 // export function print_fen_as_board(FEN_string) {

@@ -1,4 +1,3 @@
-//todo fix rook, moving right, down... broken
 import _ from "lodash";
 import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
 import compboard from "../board/compboard.js";
@@ -59,7 +58,7 @@ export default function (piece) {
             );
 
           if (compboard[y_ax - 1][x_ax].piece !== null)
-            possibleOffsets.move = possibleOffsets.move.filter(
+            possibleOffsets.move = possibleOffsets.move?.filter(
               (move) => move[0] != -1
             );
         } else possibleOffsets.first = null;
