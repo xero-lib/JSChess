@@ -1,5 +1,4 @@
 import parseFEN from "./parse/parseFEN.js";
-import parsePGN from "./parse/parsePGN.js";
 import makeMove from "./util/makeMove.js";
 
 /*
