@@ -28,7 +28,8 @@ export default function (piece) {
 
   switch (piece.constructor) {
     case Pawn:
-      //check for edge pawn
+      //check for edge 
+      
       if (x_ax === 0)
         possibleOffsets.capture = possibleOffsets.capture.filter(
           (move) => move[1] !== -1
@@ -95,14 +96,14 @@ export default function (piece) {
 
         if (
           x_ax !== 7 &&
-          (compboard[y_ax - 1][x_ax + 1].piece === null ||
-            compboard[y_ax - 1][x_ax + 1].piece.color == piece.color)
+          (
+            compboard[y_ax - 1][x_ax + 1].piece === null ||
+            compboard[y_ax - 1][x_ax + 1].piece.color == piece.color
+          )
         )
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != 1
           );
-
-        //implement en passant
       } else {
         if (compboard[y_ax + 1][x_ax].piece !== null)
           possibleOffsets.move = null;

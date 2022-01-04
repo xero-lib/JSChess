@@ -148,4 +148,5 @@ export class Pawn {
   value = [1, 3, 4, 8];
   symbol = "P";
   hasMoved = false;
+  isEnPassantable = false;
 }

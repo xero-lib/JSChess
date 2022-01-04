@@ -2,6 +2,7 @@ import calcMoves from "../calc/calcMoves.js";
 import alphaToCoord from "./alphaToCoord.js";
 import compboard from "../board/compboard.js";
 import coordCompare from "./coordCompare.js";
+import { Pawn, King, Rook } from "../data/classes.js";
 
 export default function move(piece, destination) {
   let availableMoves = calcMoves(piece);
@@ -14,7 +15,19 @@ export default function move(piece, destination) {
 
   if (atc && valid) {
     compboard[atc[0]][atc[1]].piece = piece;
-    compboard[atc[0]][atc[1]].piece.hasMoved = true;
+    if ([Pawn, King, Rook].includes(compboard[atc[0]][atc[1]].piece.constructor)) {
+      if (compboard[atc[0]][atc[1]].piece.constructor === Pawn) {
+        // console.log(destination, compboard[atc[0]][atc[1]].piece.location)
+        let offset = Number.parseInt(destination.split('')[1]) - atc[0];
+        (
+          compboard[atc[0]][atc[1]].piece.hasMoved === false &&
+          [-1, 1].includes(offset)
+        )
+          ? compboard[atc[0]][atc[1]].piece.isEnPassantable = true
+          : compboard[atc[0]][atc[1]].piece.isEnPassantable = false;
+      }
+      compboard[atc[0]][atc[1]].piece.hasMoved = true;
+    }
     compboard[piece.location[0]][piece.location[1]].piece = null;
     piece.location = move;
     return true;
