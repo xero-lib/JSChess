@@ -30,119 +30,145 @@ export default function (piece) {
     case Pawn:
       //check for edge 
       
-      if (x_ax === 0)
+      if (x_ax === 0) {
         possibleOffsets.capture = possibleOffsets.capture.filter(
           (move) => move[1] !== -1
         );
-      else if (x_ax === 7)
+      } else if (x_ax === 7) {
         possibleOffsets.capture = possibleOffsets.capture.filter(
           (move) => move[1] !== 1
         );
+      }
 
-      if (piece.hasMoved) possibleOffsets.first = null;
+      //remove possible first moves if piece hasMoved
+      if (piece.hasMoved) { possibleOffsets.first = null; }
 
       //check color
       if (piece.color.toLowerCase() == "dark") {
         //1 down
-        if (compboard[y_ax - 1][x_ax].piece !== null)
+        if (compboard[y_ax - 1][x_ax].piece !== null) {
           possibleOffsets.move = null;
-        //remove possible first moves if piece hasMoved
-
+        }
+        
         //if piece has not moved,
         if (!piece.hasMoved) {
           if (
             compboard[y_ax - 1][x_ax].piece !== null &&
             compboard[y_ax - 2][x_ax].piece !== null
-          )
+          ) {
             possibleOffsets.first = possibleOffsets.first.filter(
               (move) => move[0] != -2
             );
+          }
 
-          if (compboard[y_ax - 1][x_ax].piece !== null)
+          if (compboard[y_ax - 1][x_ax].piece !== null) {
             possibleOffsets.move = possibleOffsets.move?.filter(
               (move) => move[0] != -1
             );
-        } else possibleOffsets.first = null;
+          }
+        } else { possibleOffsets.first = null; }
 
+        //if not an edge pawn
         if (x_ax !== 0 && x_ax !== 7) {
-          //if not an edge pawn
           //down/left
           if (
             compboard[y_ax - 1][x_ax - 1].piece === null ||
             compboard[y_ax - 1][x_ax - 1]?.piece.color == piece.color
-          )
+          ) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != -1
             );
+          }
+
           //down/right
           if (
             compboard[y_ax - 1][x_ax + 1] === null ||
             compboard[y_ax - 1][x_ax + 1]?.piece?.color == piece.color
-          )
+          ) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != 1
             );
+          }
         }
 
         //if not left edge
         if (
           x_ax !== 0 &&
-          (compboard[y_ax - 1][x_ax - 1].piece === null || //! here
-            compboard[y_ax - 1][x_ax - 1].piece.color == piece.color) //! here
-        )
+          (
+            compboard[y_ax - 1][x_ax - 1].piece === null ||
+            compboard[y_ax - 1][x_ax - 1].piece.color == piece.color
+          )
+        ) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != -1
-          ); //! here
-
+          );
+        }
         if (
           x_ax !== 7 &&
           (
             compboard[y_ax - 1][x_ax + 1].piece === null ||
             compboard[y_ax - 1][x_ax + 1].piece.color == piece.color
           )
-        )
+        ) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != 1
           );
+        }
       } else {
-        if (compboard[y_ax + 1][x_ax].piece !== null)
+        if (compboard[y_ax + 1][x_ax].piece !== null) {
           possibleOffsets.move = null;
+        }
 
         if (!piece.hasMoved) {
           if (
             compboard[y_ax + 1][x_ax].piece !== null &&
             compboard[y_ax + 2][x_ax].piece !== null
-          )
+          ) {
             possibleOffsets.first = possibleOffsets.first.filter(
               (move) => move[0] != 2
             );
-          if (compboard[y_ax + 1][x_ax].piece !== null)
+          }
+
+          if (compboard[y_ax + 1][x_ax].piece !== null) {
             possibleOffsets.first = possibleOffsets.first.filter(
               (move) => move[0] != 1
             );
+          }
         }
 
         if (x_ax !== 0 && x_ax !== 7) {
-          if (compboard[y_ax + 1][x_ax - 1].piece === null)
+          if (compboard[y_ax + 1][x_ax - 1].piece === null) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != -1
             );
-          if (compboard[y_ax + 1][x_ax + 1].piece === null)
+          }
+
+          if (compboard[y_ax + 1][x_ax + 1].piece === null) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != 1
             );
+          }
         }
-        //^v consolidate
-        if (x_ax !== 0 && compboard[y_ax + 1][x_ax - 1].piece === null)
+
+        if (
+          x_ax !== 0 && compboard[y_ax + 1][x_ax - 1].piece === null && //if there's no piece to capture and
+          !compboard[y_ax][x_ax - 1].piece?.isEnPassantable              //no adjacent en pessantable pawn
+        ) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != -1
           );
-        if (x_ax !== 7 && compboard[y_ax + 1][x_ax + 1].piece === null)
+        }
+
+        if (
+          x_ax !== 7 && compboard[y_ax + 1][x_ax + 1].piece === null && //if there's no piece to capture and
+          !compboard[y_ax][x_ax + 1].piece?.isEnPassantable              //no adjacent en passantable pawn 
+        ) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != 1
           );
+        }
 
-        //! implement en passant
+        
       }
       if (possibleOffsets.capture.length === 1)
         possibleOffsets.capture = possibleOffsets.capture[0];
