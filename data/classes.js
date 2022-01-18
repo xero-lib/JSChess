@@ -5,11 +5,11 @@ import offsets from "./offsets.js";
 export class King {
   constructor(color) {
     this.color = color;
-    this.defaultPos = color.toLowerCase() == "dark" ? [7, 4] : [0, 4];
+    this.defaultPos = color == "Dark" ? [7, 4] : [0, 4];
+    this.location = this.defaultPos;
   }
 
   hasMoved = false;
-  location = this.defaultPos;
   watches = [];
   offsets = offsets.king;
   availableOffsets = [];
@@ -21,10 +21,10 @@ export class King {
 export class Queen {
   constructor(color) {
     this.color = color;
-    this.defaultPos = color.toLowerCase() == "dark" ? [7, 3] : [0, 3];
+    this.defaultPos = color == "Dark" ? [7, 3] : [0, 3];
+    this.location = this.defaultPos;
   }
 
-  location = this.defaultPos;
   watches = [];
   offsets = offsets.queen;
   availableOffsets = [];
@@ -33,21 +33,22 @@ export class Queen {
 }
 
 export class Bishop {
-  constructor(color, side = null) {
+  constructor(color, side) {
     this.color = color;
     this.side = side;
     this.defaultPos =
-      color.toLowerCase() == "dark"
-        ? side?.toLowerCase() == "queen"
+      color == "Dark"
+        ? side == "Queen"
           ? [7, 2]
           : [7, 5]
-        : side?.toLowerCase() == "queen"
-        ? [0, 2]
-        : [0, 5];
+        : side == "Queen"
+          ? [0, 2]
+          : [0, 5];
     // this.watches = ()
+    console.log(this.defaultPos);
+    this.location = this.defaultPos;
   }
 
-  location = this.defaultPos;
   watches = [];
   offsets = offsets.bishop;
   availableOffsets = [];
@@ -60,16 +61,16 @@ export class Knight {
     this.color = color;
     this.side = side;
     this.defaultPos =
-      color.toLowerCase() == "dark"
-        ? side?.toLowerCase() == "queen"
+      color == "Dark"
+        ? side == "Queen"
           ? [7, 1]
           : [7, 6]
-        : side?.toLowerCase() == "queen"
+        : side == "Queen"
         ? [0, 1]
         : [0, 6];
+    this.location = this.defaultPos;
   }
 
-  location = this.defaultPos;
   watches = [];
   offsets = offsets.knight;
   availableOffsets = [];
@@ -82,17 +83,17 @@ export class Rook {
     this.color = color;
     this.side = side;
     this.defaultPos =
-      color.toLowerCase() == "dark"
-        ? side?.toLowerCase() == "queen"
+      color == "Dark"
+        ? side == "Queen"
           ? [7, 0]
           : [7, 7]
-        : side?.toLowerCase() == "queen"
+        : side == "Queen"
           ? [0, 0]
           : [0, 7];
+    this.location = this.defaultPos;
   }
 
   hasMoved = false;
-  location = this.defaultPos;
   watches = [];
   offsets = offsets.rook;
   availableOffsets = [];
@@ -106,9 +107,9 @@ export class Pawn {
     this.color = color;
     this.file = file;
     this.offsets =
-      color.toLowerCase() == "dark" ? offsets.pawn.dark : offsets.pawn.light;
+      color == "Dark" ? offsets.pawn.dark : offsets.pawn.light;
     this.defaultPos = [1, 1];
-      color.toLowerCase() == "dark" ?
+      color == "Dark" ?
             (file === 0 || (isNaN(file) && file.toLowerCase() == "a"))
           ? [6, 0]
           : file === 1 || (isNaN(file) && file.toLowerCase() == "b")
@@ -143,9 +144,9 @@ export class Pawn {
         : file === 7 || (isNaN(file) && file.toLowerCase() == "h")
         ? [1, 7]
         : null;
+    this.location = this.defaultPos;
   }
 
-  location = this.defaultPos;
   watches = [];
   availableOffsets = [];
   value = [1, 3, 4, 8];

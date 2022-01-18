@@ -966,11 +966,11 @@ export default function (piece) {
       }
 
       if (castles.king) {
-        possibleOffsets.push([(piece.color == "Dark" ? 7 : 0), 6]);
+        possibleOffsets.push([0, 2]);
       }
 
       if (castles.queen) {
-        possibleOffsets.push([(piece.color == "Dark" ? 7 : 0), 3]);
+        possibleOffsets.push([0, -2]);
       }
       
       return possibleOffsets;

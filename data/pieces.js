@@ -11,6 +11,11 @@ const DarkQueensBishop = new Bishop("Dark", "Queen");
 const LightKingsBishop = new Bishop("Light", "King");
 const LightQueensBishop = new Bishop("Light", "Queen");
 
+// DarkKingsBishop.location = DarkKingsBishop.defaultPos;
+// DarkQueensBishop.location = DarkQueensBishop.defaultPos;
+// LightKingsBishop.location = LightKingsBishop.defaultPos;
+// LightQueensBishop.location = LightQueensBishop.defaultPos;
+
 const DarkKingsKnight = new Knight("Dark", "King");
 const DarkQueensKnight = new Knight("Dark", "Queen");
 const LightKingsKnight = new Knight("Light", "King");

@@ -42,7 +42,6 @@ export default function move(piece, destination) {
     }
     compboard[piece.location[0]][piece.location[1]].piece = null;
     piece.location = [atc[0], atc[1]];
-    // console.log(move, piece.location);
     return true;
   }
   return false;

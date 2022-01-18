@@ -33,6 +33,7 @@ export default function calcChecks(piece, in_move = [0, 0]) {
   // }
 
   /* GENERATE MOVE */
+  console.log(piece, tempBoard[tmove[0]][tmove[1]], tmove)
   if (tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) {
     return true;
   }
@@ -79,7 +80,7 @@ export default function calcChecks(piece, in_move = [0, 0]) {
         if (Array.isArray(square.piece.watches[0])) {
           //if watches contains multiple items
           isCheck = square.piece.watches.some((move) => {
-            return move != null ?  coordCompare(move, turn.toLowerCase() == "dark" ? dKingPos : lKingPos) : null ;
+            return move != null ? coordCompare(move, turn.toLowerCase() == "dark" ? dKingPos : lKingPos) : null ;
           });
         } else {
           isCheck =
