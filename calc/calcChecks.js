@@ -7,7 +7,7 @@ import { King, Pawn } from "../data/classes.js";
 import coordCompare from "../util/coordCompare.js";
 
 //go through available offsets for a given piece
-export default function calcChecks(piece, in_move) {
+export default function calcChecks(piece, in_move = [0, 0]) {
   //check if each offset for a piece will result in a new watches variable for any opponent piece that will cause the king to be watched
 
   let

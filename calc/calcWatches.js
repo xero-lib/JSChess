@@ -34,12 +34,13 @@ export default function (piece, compboard = board) {
 
   let found = false;
   let distance = 0;
+  console.log(piece.constructor, piece.location);
   let [y_ax, x_ax] = piece.location;
 
   if (y_ax == undefined || x_ax == undefined) return null;
 
   switch (piece.constructor) {
-    case Pawn:
+    case Pawn: {
       //check for edge pawn
       if (x_ax === 0) {
         if (piece.color.toLowerCase() == "dark")
@@ -70,8 +71,8 @@ export default function (piece, compboard = board) {
         default:
           return null;
       }
-      return; //just here so that the code colapses properly and doesn't drive me insane.
-    case Rook:
+    }
+    case Rook: {
       if (y_ax == 7)
         possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0);
       if (y_ax == 0)
@@ -151,7 +152,8 @@ export default function (piece, compboard = board) {
       });
 
       return watches;
-    case Knight:
+    }
+    case Knight: {
       //filter y edges
       if (y_ax == 0)
         possibleOffsets = possibleOffsets.filter((move) => move[0] > 0);
@@ -178,7 +180,8 @@ export default function (piece, compboard = board) {
       });
 
       return watches;
-    case Bishop:
+    }
+    case Bishop: {
       //check corners
       if ([y_ax, x_ax] == [0, 0])
         possibleOffsets = possibleOffsets.filter(
@@ -293,7 +296,8 @@ export default function (piece, compboard = board) {
       });
 
       return watches;
-    case Queen:
+    }
+    case Queen: {
       //check for corners
       if ([y_ax, x_ax] == [0, 0])
         possibleOffsets = possibleOffsets.filter(
@@ -467,7 +471,8 @@ export default function (piece, compboard = board) {
       });
 
       return watches;
-    case King:
+    }
+    case King: {
       //check for corners
       if ([y_ax, x_ax] == [0, 0])
         possibleOffsets = possibleOffsets.filter(
@@ -504,7 +509,9 @@ export default function (piece, compboard = board) {
       });
 
       return watches;
-    default:
+    }
+    default: {
       return;
+    }
   }
 }

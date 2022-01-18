@@ -3,6 +3,8 @@ import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
 import compboard from "../board/compboard.js";
 import offsets from "../data/offsets.js";
 import coordCompare from "../util/coordCompare.js";
+import calcChecks from "./calcChecks.js";
+import calcWatches from "./calcWatches.js";
 
 export default function (piece) {
   let possibleOffsets,
@@ -174,14 +176,17 @@ export default function (piece) {
         possibleOffsets.capture = possibleOffsets.capture[0];
       return possibleOffsets;
     case Rook:
-      if (y_ax == 7)
+      if (y_ax == 7) {
         possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0);
-      else if (y_ax == 0)
+      } else if (y_ax == 0) {
         possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0);
-      if (x_ax == 7)
+      }
+
+      if (x_ax == 7) {
         possibleOffsets = possibleOffsets.filter((move) => move[1] <= 0);
-      else if (x_ax == 0)
+      } else if (x_ax == 0) {
         possibleOffsets = possibleOffsets.filter((move) => move[1] >= 0);
+      }
 
       found = false;
       distance = 0;
@@ -194,12 +199,8 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax + y][x_ax].piece.color !== piece.color) {
               distance = y;
-            } else {
-              distance = y - 1;
-            }
-          } else {
-            distance = y;
-          }
+            } else { distance = y - 1; }
+          } else { distance = y; 9}
         }
 
         possibleOffsets = possibleOffsets.filter((move) => move[0] <= distance);
@@ -217,12 +218,8 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax - y][x_ax].piece.color !== piece.color) {
               distance = y;
-            } else {
-              distance = y_ax - 1 - y - 1;
-            }
-          } else {
-            distance = y;
-          }
+            } else { distance = y_ax - 1 - y - 1; }
+          } else { distance = y; }
         }
 
         //filter impossible offsets
@@ -240,12 +237,8 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax][x_ax - x].piece.color !== piece.color) {
               distance = x;
-            } else {
-              distance = x + 1;
-            }
-          } else {
-            distance = x;
-          }
+            } else { distance = x + 1; }
+          } else { distance = x; }
         }
 
         //filter impossible offsets
@@ -263,12 +256,8 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax][x_ax + x].piece.color !== piece.color) {
               distance = x;
-            } else {
-              distance = x - 1;
-            }
-          } else {
-            distance = x;
-          }
+            } else { distance = x - 1; }
+          } else { distance = x; }
         }
         //filter impossible offsets
         possibleOffsets = possibleOffsets.filter((move) => move[1] <= distance);
@@ -750,23 +739,13 @@ export default function (piece) {
         }
 
         possibleOffsets = possibleOffsets.filter((move) => {
-          if (move[0] != move[1]) {
-            return move;
-          }
-
-          if (move[0] > 0 - distance && move[1] < 0 - distance) {
-            return move;
-          }
-
-          if (move[0] == 0 || move[1] == 0) {
-            return move;
-          }
-
-          if (move[0] >= 0) {
-            return move;
-          }
-
-          if (move[1] >= 0) {
+          if (
+            (move[0] > 0 - distance && move[1] < 0 - distance) ||
+            (move[0] == 0 || move[1] == 0) ||
+            (move[0] != move[1]) ||
+            (move[0] >= 0) ||
+            (move[1] >= 0)
+          ) {
             return move;
           }
         });
@@ -775,22 +754,23 @@ export default function (piece) {
       return possibleOffsets;
     case King:
       //check for corners
-      if (coordCompare([y_ax, x_ax], [0, 0]))
+      if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] >= 0
         );
-      else if (coordCompare([y_ax, x_ax], [0, 7]))
+      } else if (coordCompare([y_ax, x_ax], [0, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] <= 0
         );
-      else if (coordCompare([y_ax, x_ax], [7, 0]))
+      } else if (coordCompare([y_ax, x_ax], [7, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[1] >= 0
         );
-      else if (coordCompare([y_ax, x_ax], [7, 7]))
+      } else if (coordCompare([y_ax, x_ax], [7, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[0] <= 0
         );
+      }
 
       //check for edges
       if (y_ax == 0)
@@ -906,6 +886,93 @@ export default function (piece) {
         }
       }
 
+      //check if able to castle
+      /* 
+        check if king is in check
+        check if !king.hasMoved && (!LeftRook.hasMoved || !RightRook.hasMoved) && make sure they're on the proper squares in case of a FEN or other error
+        check if there are any pieces on the castling squares (remember the unused square on queenside)
+        check if there are pieces watching the castling squares that the king would pass or land on (not the unused square on queenside)
+      */
+
+      let castles = {
+        queen: true,
+        king: true
+      };
+
+      let rookCheck = (y, x) => compboard[y][x].piece != null && compboard[y][x].piece.symbol == "R" && compboard[y][x].piece.hasMoved == false;
+
+      if (
+        !calcChecks(piece) &&  // check if king is in check
+        !piece.hasMoved && // check if king has amoved
+        piece.color == "Dark" // check if rooks have moved and are on proper squares
+        ? (
+            rookCheck(7, 7) ||
+            rookCheck(7, 0)
+          )
+        : (
+            rookCheck(0, 7) ||
+            rookCheck(0, 0)
+          )
+      ) {
+        if (
+          ( //check if king side is open
+            compboard[piece.color == "Dark" ? 7 : 0][6].piece == null &&
+            compboard[piece.color == "Dark" ? 7 : 0][5].piece == null
+          ) 
+        ) {
+          //get all watches for opposing color
+          for (let row in compboard) { // could use optimizing
+            for (let sqr in row) {
+              if (!sqr.piece || sqr.piece.color != piece.color) { continue; }
+              for (let watch in calcWatches(sqr.piece)) {
+                if (!Array.isArray(watch)) { continue; }
+                if ( // check queen side castlability 
+                  coordCompare( // check queen side C
+                    watch,
+                    piece.color == "Dark"
+                      ? [7, 2]
+                      : [0, 2]
+                  ) ||
+                  coordCompare( // check queen side D
+                    watch,
+                    piece.color == "Dark"
+                      ? [7, 3]
+                      : [0, 3]
+                  )
+                ) {
+                  castles.queen = false; // disallow queen side castling
+                }
+
+                if ( // check king side castlability 
+                  coordCompare( // check king side F
+                    watch,
+                    piece.color == "Dark"
+                      ? [7, 5]
+                      : [0, 5]
+                  ) ||
+                  coordCompare( // check king side G
+                    watch,
+                    piece.color == "Dark"
+                      ? [7, 6]
+                      : [0, 6]
+                  )
+                ) {
+                  castles.king = false; // disallow king side castling
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (castles.king) {
+        possibleOffsets.push([(piece.color == "Dark" ? 7 : 0), 6]);
+      }
+
+      if (castles.queen) {
+        possibleOffsets.push([(piece.color == "Dark" ? 7 : 0), 3]);
+      }
+      
       return possibleOffsets;
     default:
       return;

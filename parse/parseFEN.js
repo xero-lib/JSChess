@@ -6,7 +6,7 @@ import printBoard from "../util/printBoard.js";
 import refreshBoard from "../util/refreshBoard.js";
 import resetBoard from "../util/resetBoard.js";
 
-export default function (FEN_string) {
+export function set_FEN(FEN_string) {
     resetBoard();
     let rows = FEN_string.split(' ')[0].split('').reverse().join('').split('/');
     if (rows.length !== 8) return false;

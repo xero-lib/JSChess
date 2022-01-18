@@ -8,6 +8,7 @@ export class King {
     this.defaultPos = color.toLowerCase() == "dark" ? [7, 4] : [0, 4];
   }
 
+  hasMoved = false;
   location = this.defaultPos;
   watches = [];
   offsets = offsets.king;
@@ -22,6 +23,7 @@ export class Queen {
     this.color = color;
     this.defaultPos = color.toLowerCase() == "dark" ? [7, 3] : [0, 3];
   }
+
   location = this.defaultPos;
   watches = [];
   offsets = offsets.queen;
@@ -85,10 +87,11 @@ export class Rook {
           ? [7, 0]
           : [7, 7]
         : side?.toLowerCase() == "queen"
-        ? [0, 0]
-        : [0, 7];
+          ? [0, 0]
+          : [0, 7];
   }
 
+  hasMoved = false;
   location = this.defaultPos;
   watches = [];
   offsets = offsets.rook;
@@ -104,9 +107,9 @@ export class Pawn {
     this.file = file;
     this.offsets =
       color.toLowerCase() == "dark" ? offsets.pawn.dark : offsets.pawn.light;
-    this.defaultPos =
+    this.defaultPos = [1, 1];
       color.toLowerCase() == "dark" ?
-            file === 0 || (isNaN(file) && file.toLowerCase() == "a")
+            (file === 0 || (isNaN(file) && file.toLowerCase() == "a"))
           ? [6, 0]
           : file === 1 || (isNaN(file) && file.toLowerCase() == "b")
           ? [6, 1]
