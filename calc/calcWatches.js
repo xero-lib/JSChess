@@ -34,7 +34,6 @@ export default function (piece, compboard = board) {
 
   let found = false;
   let distance = 0;
-  console.log(piece.constructor, piece.location);
   let [y_ax, x_ax] = piece.location;
 
   if (y_ax == undefined || x_ax == undefined) return null;
@@ -43,10 +42,10 @@ export default function (piece, compboard = board) {
     case Pawn: {
       //check for edge pawn
       if (x_ax === 0) {
-        if (piece.color.toLowerCase() == "dark")
-          return [[piece.location[0] - 1, piece.location[1] + 1]];
-        if (piece.color.toLowerCase() == "light")
-          return [[piece.location[0] + 1, piece.location[1] + 1]];
+        // if (piece.color == "Dark")
+        //   return [[piece.location[0] - 1, piece.location[1] + 1]];
+        // if (piece.color == "Light")
+        //   return [[piece.location[0] + 1, piece.location[1] + 1]];
       }
 
       if (x_ax === 7) {

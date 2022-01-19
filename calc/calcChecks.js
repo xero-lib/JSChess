@@ -33,7 +33,6 @@ export default function calcChecks(piece, in_move = [0, 0]) {
   // }
 
   /* GENERATE MOVE */
-  console.log(piece, tempBoard[tmove[0]][tmove[1]], tmove)
   if (tempBoard[tmove[0]][tmove[1]].piece?.constructor == King) {
     return true;
   }

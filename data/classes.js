@@ -44,8 +44,6 @@ export class Bishop {
         : side == "Queen"
           ? [0, 2]
           : [0, 5];
-    // this.watches = ()
-    console.log(this.defaultPos);
     this.location = this.defaultPos;
   }
 
