@@ -46,23 +46,21 @@ export default function (piece, compboard = board) {
         //   return [[piece.location[0] - 1, piece.location[1] + 1]];
         // if (piece.color == "Light")
         //   return [[piece.location[0] + 1, piece.location[1] + 1]];
+        return [[piece.location[0] + (piece.color == "Dark" ? -1 : 1), piece.location[1] + 1]];
       }
 
       if (x_ax === 7) {
-        if (piece.color.toLowerCase() == "dark")
-          return [[piece.location[0] - 1, piece.location[1] - 1]];
-        if (piece.color.toLowerCase() == "light")
-          return [[piece.location[0] + 1, piece.location[1] - 1]];
+        return [[piece.location[0] + (piece.color == "Dark" ? -1 : 1), piece.location[1] - 1]];
       }
 
       //if not edge pawn
-      switch (piece.color.toLowerCase()) {
-        case "light":
+      switch (piece.color) {
+        case "Light":
           return [
             [piece.location[0] + 1, piece.location[1] + 1],
             [piece.location[0] + 1, piece.location[1] - 1],
           ];
-        case "dark":
+        case "Dark":
           return [
             [piece.location[0] - 1, piece.location[1] + 1],
             [piece.location[0] - 1, piece.location[1] - 1],

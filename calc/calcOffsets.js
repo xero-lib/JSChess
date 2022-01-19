@@ -894,6 +894,9 @@ export default function (piece) {
         check if there are pieces watching the castling squares that the king would pass or land on (not the unused square on queenside)
       */
 
+
+      if (piece.hasMoved) { return possibleOffsets; } //if king has moved, return
+
       let castles = {
         queen: true,
         king: true
@@ -903,7 +906,10 @@ export default function (piece) {
 
       if (
         !calcChecks(piece) &&  // check if king is in check
-        !piece.hasMoved && // check if king has amoved
+        (
+          compboard[piece.color == "Dark" ? 7 : 0][4].piece?.constructor == King &&
+          compboard[piece.color == "Dark" ? 7 : 0][4].piece.color == piece.color == "Dark" ? "Dark" : "Light"
+        ) &&
         piece.color == "Dark" // check if rooks have moved and are on proper squares
         ? (
             rookCheck(7, 7) ||

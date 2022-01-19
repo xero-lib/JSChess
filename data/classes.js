@@ -106,7 +106,7 @@ export class Pawn {
     this.file = file;
     this.offsets =
       color == "Dark" ? offsets.pawn.dark : offsets.pawn.light;
-    this.defaultPos = [1, 1];
+    this.defaultPos =
       color == "Dark" ?
             (file === 0 || (isNaN(file) && file.toLowerCase() == "a"))
           ? [6, 0]

@@ -21,3 +21,7 @@ export default function makeMove(start, end) {
   printBoard();
   return false;
 }
+
+export function updateTurn(tcolor) {
+  turn = tcolor.toLowerCase() == 'b' ? "Dark" : "Light";
+} 

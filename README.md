@@ -2,4 +2,4 @@
 
 A JavaScript chess game.
 
-## Status: Broken, in dev
+## Status: Working partially, need to fix FEN castling rules as well as fixing castling rules period

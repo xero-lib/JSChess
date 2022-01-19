@@ -1,14 +1,18 @@
 import compboard from "../board/compboard.js";
-import { Pawn } from "../data/classes.js";
+import printBoard from "../util/printBoard.js";
+import resetBoard from "../util/resetBoard.js";
+import { King, Pawn } from "../data/classes.js";
+import refreshBoard from "../util/refreshBoard.js";
+import coordCompare from "../util/coordCompare.js";
 import letterToColor from "../util/letterToColor.js";
 import letterToPiece from "../util/letterToPiece.js";
-import printBoard from "../util/printBoard.js";
-import refreshBoard from "../util/refreshBoard.js";
-import resetBoard from "../util/resetBoard.js";
+import { updateTurn } from "../util/makeMove.js";
 
 export function set_FEN(FEN_string) {
     resetBoard();
     let rows = FEN_string.split(' ')[0].split('').reverse().join('').split('/');
+    let ply = FEN_string.split(' ')[1];
+    updateTurn(ply.toLowerCase() == 'w' ? "Light" : "Dark");
     if (rows.length !== 8) return false;
 
     rows.forEach((row, y) => {
@@ -31,7 +35,17 @@ export function set_FEN(FEN_string) {
                         compboard[y][x-buffer].piece = new Piece(color, x);
                     }
                 } else {
-                    compboard[y][x-buffer].piece = new Piece(color);
+                    compboard[y][x-buffer].piece = new Piece(color); // need to set queen/king sides. For bishops, check square color to determine side
+                    if (
+                        Piece === King &&
+                        (
+                            (color === "Light" && !coordCompare([0, 4], [y, x])) ||
+                            (color === "Dark" && !coordCompare([7, 4], [y, x]))
+                        )
+                    ) {
+                        compboard[y][x-buffer].piece.hasMoved = true;
+                    }
+
                 }
             } else {
                 let space = Number.parseInt(item);
