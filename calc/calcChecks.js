@@ -42,7 +42,7 @@ export default function calcChecks(piece, in_move = [0, 0]) {
   tpiece.location = tmove;
   
   if (tpiece.constructor === King) {
-    if (tpiece.color.toLowerCase() == "Dark") {
+    if (tpiece.color == "Dark") {
       dKingPos = tmove ? tmove : dKingPos;
     } else {
       lKingPos = tmove ? tmove : lKingPos;
@@ -73,18 +73,18 @@ export default function calcChecks(piece, in_move = [0, 0]) {
       //for each square on the tempBoard
       if (
         square.piece !== null &&
-        square.piece.color.toLowerCase() !== turn.toLowerCase()
+        square.piece.color !== turn
       ) {
         //if there's a piece on that square
         if (Array.isArray(square.piece.watches[0])) {
           //if watches contains multiple items
           isCheck = square.piece.watches.some((move) => {
-            return move != null ? coordCompare(move, turn.toLowerCase() == "dark" ? dKingPos : lKingPos) : null ;
+            return move != null ? coordCompare(move, turn == "Dark" ? dKingPos : lKingPos) : null ;
           });
         } else {
           isCheck =
-            coordCompare(square.piece.watches, dKingPos) && turn.toLowerCase() == "dark" ||
-            coordCompare(square.piece.watches, lKingPos) && turn.toLowerCase() == "light";
+            coordCompare(square.piece.watches, dKingPos) && turn == "Dark" ||
+            coordCompare(square.piece.watches, lKingPos) && turn == "Light";
         }
       }
     });

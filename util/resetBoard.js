@@ -8,24 +8,12 @@ export default function () {
       pieces.dark.forEach((piece) => {
         if (coordCompare(piece.defaultPos, [y, x])) {
           compboard[y][x].piece = piece;
-        } else {
-          // piece.defaultPos.forEach((coord) => {
-          //   if (coordCompare([coord[0], coord[1]], [y, x])) {
-          //     compboard[y][x].piece = piece;
-          //   }
-          // });
         }
       });
   
       pieces.light.forEach((piece) => {
         if (coordCompare(piece.defaultPos, [y, x])) {
           compboard[y][x].piece = piece;
-        } else {
-          // piece.defaultPos.forEach((coord) => {
-          //   if (coordCompare([coord[0], coord[1]], [y, x])) {
-          //     compboard[y][x].piece = piece;
-          //   }
-          // });
         }
       });
     }

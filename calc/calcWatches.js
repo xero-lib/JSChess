@@ -2,6 +2,7 @@ import _ from "lodash";
 import board from "../board/compboard.js";
 import offsets from "../data/offsets.js";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
+import coordCompare from "../util/coordCompare.js";
 
 export default function (piece, compboard = board) {
   let watches = [],
@@ -10,9 +11,9 @@ export default function (piece, compboard = board) {
 
   switch (piece.constructor) {
     case Pawn:
-      if (piece.color.toLowerCase() == "dark")
+      if (piece.color == "Dark")
         possibleOffsets = _.cloneDeep(offsets.pawn.dark["capture"]);
-      else if (piece.color.toLowerCase() == "light")
+      else if (piece.color == "Light")
         possibleOffsets = _.cloneDeep(offsets.pawn.light["capture"]);
       break;
     case Rook:
@@ -42,10 +43,6 @@ export default function (piece, compboard = board) {
     case Pawn: {
       //check for edge pawn
       if (x_ax === 0) {
-        // if (piece.color == "Dark")
-        //   return [[piece.location[0] - 1, piece.location[1] + 1]];
-        // if (piece.color == "Light")
-        //   return [[piece.location[0] + 1, piece.location[1] + 1]];
         return [[piece.location[0] + (piece.color == "Dark" ? -1 : 1), piece.location[1] + 1]];
       }
 
@@ -100,7 +97,7 @@ export default function (piece, compboard = board) {
         distance = 0;
         found = false;
         for (let y = 1; y <= y_ax && found === false; y++) {
-          if (compboard[y_ax - y][x_ax]?.piece !== null) {
+          if (compboard[y_ax - y][x_ax].piece !== null) {
             found = true;
           }
           distance = y;
@@ -117,7 +114,7 @@ export default function (piece, compboard = board) {
         distance = 0;
         found = false;
         for (let x = 1; x <= x_ax && found === false; x++) {
-          if (compboard[y_ax][x_ax - x]?.piece !== null) {
+          if (compboard[y_ax][x_ax - x].piece !== null) {
             found = true;
           }
           distance = x;
@@ -180,22 +177,23 @@ export default function (piece, compboard = board) {
     }
     case Bishop: {
       //check corners
-      if ([y_ax, x_ax] == [0, 0])
+      if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] > 0 || move[1] > 0
         );
-      else if ([y_ax, x_ax] == [0, 7])
+      } else if (coordCompare([y_ax, x_ax], [0, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] < 0 || move[1] > 0
         );
-      else if ([y_ax, x_ax] == [7, 0])
+      } else if (coordCompare([y_ax, x_ax], [7, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] > 0 || move[1] < 0
         );
-      else if ([y_ax, x_ax] == [7, 7])
+      } else if (coordCompare([y_ax, x_ax], [7, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] > 0 || move[0] > 0
         );
+      }
 
       //check edges
       if (y_ax == 7)
@@ -208,7 +206,7 @@ export default function (piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => move[1] > 0);
 
       //filter up/left
-      if ([y_ax, x_ax] != [7, 0]) {
+      if (!coordCompare([y_ax, x_ax], [7, 0])) {
         distance = 0;
         found = false;
 
@@ -227,7 +225,7 @@ export default function (piece, compboard = board) {
       }
 
       //filter up/right
-      if ([y_ax, x_ax] != [7, 7]) {
+      if (!coordCompare([y_ax, x_ax], [7, 7])) {
         distance = 0;
         found = false;
 
@@ -246,7 +244,7 @@ export default function (piece, compboard = board) {
       }
 
       //filter down/left
-      if ([y_ax, x_ax] != [0, 0]) {
+      if (!coordCompare([y_ax, x_ax], [0, 0])) {
         distance = 0;
         found = false;
 
@@ -266,7 +264,7 @@ export default function (piece, compboard = board) {
       }
 
       //filter down/right //! probably broken
-      if ([y_ax, x_ax] != [0, 7]) {
+      if (!coordCompare([y_ax, x_ax], [0, 7])) {
         distance = 0;
         found = false;
 
@@ -278,12 +276,11 @@ export default function (piece, compboard = board) {
         }
 
         //! probably an issue
-        possibleOffsets = possibleOffsets.filter(
-          (move) =>
-            (move[0] >= 0 - distance && move[1] <= distance) ||
-            move[0] >= 0 ||
-            move[1] <= 0
-        );
+        possibleOffsets = possibleOffsets.filter((move) => {
+          (move[0] >= 0 - distance && move[1] <= distance) ||
+          move[0] >= 0 ||
+          move[1] <= 0
+        });
       }
 
       watches = [];
@@ -296,22 +293,23 @@ export default function (piece, compboard = board) {
     }
     case Queen: {
       //check for corners
-      if ([y_ax, x_ax] == [0, 0])
+      if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] >= 0
         );
-      else if ([y_ax, x_ax] == [0, 7])
+      } else if (coordCompare([y_ax, x_ax], [0, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] <= 0
         );
-      else if ([y_ax, x_ax] == [7, 0])
+      } else if (coordCompare([y_ax, x_ax], [7, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[1] >= 0
         );
-      else if ([y_ax, x_ax] == [7, 7])
+      } else if (coordCompare([y_ax, x_ax], [7, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[0] <= 0
         );
+      }
 
       //check for edge
       if (y_ax == 0)
@@ -379,13 +377,12 @@ export default function (piece, compboard = board) {
         }
 
         possibleOffsets = possibleOffsets.filter((move) => {
-          if (move[0] !== 0 || move[1] <= distance) return move;
-          if (move[1] <= 0) return move; //uh... please fix this
+          if (move[0] !== 0 || move[1] <= distance || move[1] <= 0) return move;
         });
       }
 
       //filter up/right
-      if ([y_ax, x_ax] != [7, 7]) {
+      if (!coordCompare([y_ax, x_ax], [7, 7])) {
         distance = 0;
         found = false;
 
@@ -404,7 +401,7 @@ export default function (piece, compboard = board) {
       }
 
       //filter up/left
-      if ([y_ax, x_ax] != [7, 0]) {
+      if (!coordCompare([y_ax, x_ax], [7, 0])) {
         distance = 0;
         found = false;
 
@@ -423,7 +420,7 @@ export default function (piece, compboard = board) {
       }
 
       //filter down/right
-      if ([y_ax, x_ax] != [0, 7]) {
+      if (!coordCompare([y_ax, x_ax], [0, 7])) {
         distance = 0;
         found = false;
 
@@ -433,16 +430,20 @@ export default function (piece, compboard = board) {
         }
 
         possibleOffsets = possibleOffsets.filter((move) => {
-          if (0 - move[0] == move[1] && move[1] <= distance) return move;
-          if (move[0] == -move[1] && move[1] < distance) return move;
-          if (move[0] == 0 || move[1] == 0) return move;
-          if (move[0] >= 0) return move;
-          if (move[1] <= 0) return move; //uh... please fix this
+          if (
+            (0 - move[0] == move[1] && move[1] <= distance) ||
+            move[0] == -move[1] && move[1] < distance ||
+            move[0] == 0 || move[1] == 0 ||
+            move[0] >= 0 ||
+            move[1] <= 0
+          ) {
+            return move;
+          }
         });
       }
 
       //filter down/left
-      if ([y_ax, x_ax] != [0, 0]) { // impl coordCompare
+      if (!coordCompare([y_ax, x_ax], [0, 0])) {
         distance = 0;
         found = false;
 
@@ -452,11 +453,17 @@ export default function (piece, compboard = board) {
         }
 
         possibleOffsets = possibleOffsets.filter((move) => {
-          if (move[0] != move[1]) return move;
-          if (move[0] >= 0 - distance && move[1] <= 0 - distance) return move;
-          if (move[0] == 0 || move[1] == 0) return move;
-          if (move[0] >= 0) return move;
-          if (move[1] >= 0) return move; //uh... please fix this
+          if (
+           (move[0] >= 0 - distance && move[1] <= 0 - distance) ||
+            move[0] != move[1] ||
+            move[0] == 0 ||
+            move[1] == 0 ||
+            move[0] >= 0 ||
+            move[1] >= 0
+          ) {
+            return move;
+          }
+          //uh... please fix this
         });
       }
 
@@ -471,22 +478,23 @@ export default function (piece, compboard = board) {
     }
     case King: {
       //check for corners
-      if ([y_ax, x_ax] == [0, 0])
+      if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] >= 0
         );
-      else if ([y_ax, x_ax] == [0, 7])
+      } else if (coordCompare([y_ax, x_ax], [0, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] >= 0 && move[1] <= 0
         );
-      else if ([y_ax, x_ax] == [7, 0])
+      } else if (coordCompare([y_ax, x_ax], [7, 0])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[1] >= 0
         );
-      else if ([y_ax, x_ax] == [7, 7])
+      } else if (coordCompare([y_ax, x_ax], [7, 7])) {
         possibleOffsets = possibleOffsets.filter(
           (move) => move[0] <= 0 && move[0] <= 0
         );
+      }
 
       //check for edges
       if (y_ax == 0)

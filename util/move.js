@@ -17,9 +17,8 @@ export default function move(piece, destination) {
   if (atc && valid) {
     compboard[atc[0]][atc[1]].piece = piece;
     if ([Pawn, King, Rook].includes(compboard[atc[0]][atc[1]].piece.constructor)) {
-      let offset = Number.parseInt(destination.split('')[1]) - atc[0];
+      let offset = atc[1] - piece.location[1];
       if (compboard[atc[0]][atc[1]].piece.constructor === Pawn) {
-        // console.log(destination, compboard[atc[0]][atc[1]].piece.location)
         (
           compboard[atc[0]][atc[1]].piece.hasMoved === false &&
           [-1, 1].includes(offset)
@@ -29,14 +28,15 @@ export default function move(piece, destination) {
       }
       compboard[atc[0]][atc[1]].piece.hasMoved = true;
       if (compboard[atc[0]][atc[1]].piece.constructor === King) {
+        let y = piece.color == "Dark" ? 7 : 0;
         if (offset > 1) { // set king side rook
-          let rook = _.cloneDeep(compboard[piece.color == "Dark" ? 7 : 0][7].piece);
-          compboard[piece.color == "Dark" ? 7 : 0][7].piece = null;
-          compboard[piece.color == "Dark" ? 7 : 0][5] = rook;
+          let rook = _.cloneDeep(compboard[y][7].piece);
+          compboard[y][7].piece = null;
+          compboard[y][5].piece = rook;
         } else if (offset < -1) {
-          let rook = _.cloneDeep(compboard[piece.color == "Dark" ? 7 : 0][0].piece);
-          compboard[piece.color == "Dark" ? 7 : 0][0].piece = null;
-          compboard[piece.color == "Dark" ? 7 : 0][3].piece = rook;
+          let rook = _.cloneDeep(compboard[y][0].piece);
+          compboard[y][0].piece = null;
+          compboard[y][3].piece = rook;
         }
       }
     }

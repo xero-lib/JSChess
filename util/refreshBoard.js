@@ -9,12 +9,12 @@ export default function refreshBoard() {
     for (let x = 0; x < 8; x++) {
       if (compboard[y][x].piece) {
         let piece = compboard[y][x].piece;
+        piece.offsets = calcOffsets(compboard[y][x].piece);
         piece.location = [y, x];
         piece.watches = calcWatches(
           piece,
           compboard
         );
-        piece.offsets = calcOffsets(compboard[y][x].piece);
         piece.coordinate = compboard[y][x].coordinate;
         piece.moves = calcMoves(compboard[y][x].piece);
       }

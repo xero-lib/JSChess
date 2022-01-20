@@ -1,0 +1,9 @@
+import compboard from "../board/compboard.js";
+
+export default function () {
+    for (let y of compboard) {
+        for (let x of y) {
+            x.piece = null;
+        }
+    }
+}
