@@ -9,35 +9,23 @@ export default function calcMoves(piece) {
 
 	let pm = []; //possible moves
 
-	if (ao.length == 0) {
+	if (Object.keys(ao).length == 0) {
 		return [];
 	}
+
 	if (piece.constructor == Pawn) {
 		let allMoves = [];
-
-
-		if (piece.hasMoved) {
-			ao.first = null;
-		} else if (!piece.hasMoved && ao.first !== null) {
-			allMoves.push(ao.first, ao.move);
-		} else if (piece.hasMoved && ao.move) {
-			allMoves.push(ao.move);
-		} else if (ao.capture[0]) {
-			if (ao.capture[0].length > 1) {
-				allMoves.push(...ao.capture);
-			} else {
-				allMoves.push(ao.capture);
+		
+		Object.keys(ao).forEach((key) => {
+			if (ao[key] != null && ao[key].length != 0) {
+				Array.isArray(ao[key][0]) // a little dangerous
+					? allMoves.push(...ao[key])
+					: allMoves.push(ao[key])
 			}
-		} else if (typeof ao.capture[0] == "number") {
-			allMoves.push(ao.capture);
-		} else {
-			ao.capture = null;
-		}
-        
-        allMoves = allMoves.filter((m) => m != null);
-        
+		});
+		
 		allMoves.forEach((offset) => { 
-			if (offset.length > 0) {
+			if (offset.length != 0) {
 				pm.push([y_ax + offset[0], x_ax + offset[1]]);
 			}
 		});
@@ -46,10 +34,10 @@ export default function calcMoves(piece) {
 			if (offset.length > 1) {
 				pm.push([y_ax + offset[0], x_ax + offset[1]]);
 			} else {
-				pm.push(array);
+				pm.push([y_ax + array[0], x_ax + array[1]]);
 			}
 		});
 	}
-
+	// console.log(pm);
 	return pm;
 }

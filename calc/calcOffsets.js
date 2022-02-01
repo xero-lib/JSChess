@@ -138,43 +138,35 @@ export default function (piece) {
           }
         }
 
-        if (x_ax !== 0 && x_ax !== 7) {
-          if (compboard[y_ax + 1][x_ax - 1].piece === null) {
+        if (x_ax !== 0 && compboard[y_ax + 1][x_ax - 1].piece === null) {
             possibleOffsets.capture = possibleOffsets.capture.filter(
               (move) => move[1] != -1
             );
-          }
+        }
 
-          if (compboard[y_ax + 1][x_ax + 1].piece === null) {
-            possibleOffsets.capture = possibleOffsets.capture.filter(
-              (move) => move[1] != 1
-            );
-          }
+        if (x_ax !== 7 && compboard[y_ax + 1][x_ax + 1].piece === null) {
+          possibleOffsets.capture = possibleOffsets.capture.filter(
+            (move) => move[1] != 1
+          );
         }
       }
 
-      if (possibleOffsets.capture.length === 1) { possibleOffsets.capture = possibleOffsets.capture[0]; }
+      if (possibleOffsets.capture.length === 1) {
+        possibleOffsets.capture = possibleOffsets.capture[0];
+      }
       
       if (
         x_ax != 0 &&
-        compboard[y_ax][x_ax - 1].piece?.isEnPassantable              //no adjacent en pessantable pawn
+        compboard[y_ax][x_ax - 1].piece?.isEnPassantable              // adjacent en pessantable pawn
       ) {
-        possibleOffsets.capture.push((
-          Array.isArray(possibleOffsets.capture)
-            ? [(piece.color == "Dark" ? -1 : 1), -1]
-            : [[(piece.color == "Dark" ? -1 : 1), -1]]
-        ))
+        possibleOffsets.capture.push([(piece.color == "Dark" ? -1 : 1), -1]);
       }
 
       if (
         x_ax != 7 &&
-        compboard[y_ax][x_ax + 1].piece?.isEnPassantable              //no adjacent en pessantable pawn
+        compboard[y_ax][x_ax + 1].piece?.isEnPassantable              // adjacent en pessantable pawn
       ) {
-        possibleOffsets.capture.push((
-          Array.isArray(possibleOffsets.capture)
-            ? [(piece.color == "Dark" ? -1 : 1), 1]
-            : [[(piece.color == "Dark" ? -1 : 1), 1]]
-        ))
+        possibleOffsets.capture.push([(piece.color == "Dark" ? -1 : 1), 1]);
       }
 
       return possibleOffsets;

@@ -18,3 +18,7 @@ export default function alphaToCoord(move) {
 
   return [col - 1, fileNum];
 }
+
+export function isUpperCase(str) {
+  return str === str.toUpperCase();
+}

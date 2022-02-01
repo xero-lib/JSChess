@@ -82,7 +82,7 @@ export default function calcChecks(piece, in_move = [0, 0]) {
             return move != null ? coordCompare(move, turn == "Dark" ? dKingPos : lKingPos) : null ;
           });
         } else {
-          isCheck =
+          isCheck = 
             coordCompare(square.piece.watches, dKingPos) && turn == "Dark" ||
             coordCompare(square.piece.watches, lKingPos) && turn == "Light";
         }
@@ -99,9 +99,10 @@ export const filterChecks = () => {
     row.forEach((square, j) => {
       if (square.piece !== null) {
         //if a given offset would result in check, filter it
-        compboard[i][j].piece.moves = square.piece.moves.filter((move) => //bad practice but safe in this context
-          !calcChecks(square.piece, move)
-        );
+        compboard[i][j].piece.moves = square.piece.moves.filter((move) => {
+          // console.log(square.piece, move);
+          return !calcChecks(square.piece, move)
+        });
       }
     });
   });
