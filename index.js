@@ -6,6 +6,5 @@ import makeMove from "./util/makeMove.js";
     use `set_FEN("<FEN string>")` to start the board from a specified FEN position
 */
 
-// makeMove("e4", "e5");
+makeMove("e4", "e5");
 //etc
-
