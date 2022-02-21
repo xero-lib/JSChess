@@ -2,7 +2,7 @@
 
 A JavaScript chessboard program.
 
-## Use
+## Basic Use
 
 - Inside of index.js, you may list (in order) the moves to be made on the board, alternating between light and dark, with the `makeMove("start square", "end square")` function.
 
