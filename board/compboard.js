@@ -12,6 +12,7 @@ for (let y = 0; y < 8; y++) {
       piece: null,
       color: colorboard[y][x],
       coordinate: `${files[x]}${y + 1}`,
+      location: [y, x],
     };
   }
 }

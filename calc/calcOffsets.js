@@ -5,6 +5,7 @@ import offsets from "../data/offsets.js";
 import coordCompare from "../util/coordCompare.js";
 import calcChecks from "./calcChecks.js";
 import calcWatches from "./calcWatches.js";
+import getCastles from "../util/getCastles.js";
 
 export default function (piece) {
   let possibleOffsets,
@@ -17,9 +18,7 @@ export default function (piece) {
   switch (piece.constructor) {
     case Pawn:
       possibleOffsets = _.cloneDeep({
-        ...(piece.color == "Dark"
-          ? offsets.pawn.dark
-          : offsets.pawn.light),
+        ...(piece.color == "Dark" ? offsets.pawn.dark : offsets.pawn.light),
       });
       break;
     default:
@@ -30,8 +29,8 @@ export default function (piece) {
 
   switch (piece.constructor) {
     case Pawn:
-      //check for edge 
-      
+      //check for edge
+
       if (x_ax === 0) {
         possibleOffsets.capture = possibleOffsets.capture.filter(
           (move) => move[1] !== -1
@@ -43,7 +42,9 @@ export default function (piece) {
       }
 
       //remove possible first moves if piece hasMoved
-      if (piece.hasMoved) { possibleOffsets.first = null; }
+      if (piece.hasMoved) {
+        possibleOffsets.first = null;
+      }
 
       //check color
       if (piece.color == "Dark") {
@@ -51,7 +52,7 @@ export default function (piece) {
         if (compboard[y_ax - 1][x_ax].piece !== null) {
           possibleOffsets.move = null;
         }
-        
+
         //if piece has not moved,
         if (!piece.hasMoved) {
           if (
@@ -68,7 +69,9 @@ export default function (piece) {
               (move) => move[0] != -1
             );
           }
-        } else { possibleOffsets.first = null; }
+        } else {
+          possibleOffsets.first = null;
+        }
 
         //if not an edge pawn
         if (x_ax !== 0 && x_ax !== 7) {
@@ -96,10 +99,8 @@ export default function (piece) {
         //if not left edge
         if (
           x_ax !== 0 &&
-          (
-            compboard[y_ax - 1][x_ax - 1].piece === null ||
-            compboard[y_ax - 1][x_ax - 1].piece.color == piece.color
-          )
+          (compboard[y_ax - 1][x_ax - 1].piece === null ||
+            compboard[y_ax - 1][x_ax - 1].piece.color == piece.color)
         ) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != -1
@@ -107,10 +108,8 @@ export default function (piece) {
         }
         if (
           x_ax !== 7 &&
-          (
-            compboard[y_ax - 1][x_ax + 1].piece === null ||
-            compboard[y_ax - 1][x_ax + 1].piece.color == piece.color
-          )
+          (compboard[y_ax - 1][x_ax + 1].piece === null ||
+            compboard[y_ax - 1][x_ax + 1].piece.color == piece.color)
         ) {
           possibleOffsets.capture = possibleOffsets.capture.filter(
             (move) => move[1] != 1
@@ -139,9 +138,9 @@ export default function (piece) {
         }
 
         if (x_ax !== 0 && compboard[y_ax + 1][x_ax - 1].piece === null) {
-            possibleOffsets.capture = possibleOffsets.capture.filter(
-              (move) => move[1] != -1
-            );
+          possibleOffsets.capture = possibleOffsets.capture.filter(
+            (move) => move[1] != -1
+          );
         }
 
         if (x_ax !== 7 && compboard[y_ax + 1][x_ax + 1].piece === null) {
@@ -154,19 +153,19 @@ export default function (piece) {
       if (possibleOffsets.capture.length === 1) {
         possibleOffsets.capture = possibleOffsets.capture[0];
       }
-      
+
       if (
         x_ax != 0 &&
-        compboard[y_ax][x_ax - 1].piece?.isEnPassantable              // adjacent en pessantable pawn
+        compboard[y_ax][x_ax - 1].piece?.isEnPassantable // adjacent en pessantable pawn
       ) {
-        possibleOffsets.capture.push([(piece.color == "Dark" ? -1 : 1), -1]);
+        possibleOffsets.capture.push([piece.color == "Dark" ? -1 : 1, -1]);
       }
 
       if (
         x_ax != 7 &&
-        compboard[y_ax][x_ax + 1].piece?.isEnPassantable              // adjacent en pessantable pawn
+        compboard[y_ax][x_ax + 1].piece?.isEnPassantable // adjacent en pessantable pawn
       ) {
-        possibleOffsets.capture.push([(piece.color == "Dark" ? -1 : 1), 1]);
+        possibleOffsets.capture.push([piece.color == "Dark" ? -1 : 1, 1]);
       }
 
       return possibleOffsets;
@@ -194,8 +193,12 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax + y][x_ax].piece.color !== piece.color) {
               distance = y;
-            } else { distance = y - 1; }
-          } else { distance = y; }
+            } else {
+              distance = y - 1;
+            }
+          } else {
+            distance = y;
+          }
         }
 
         possibleOffsets = possibleOffsets.filter((move) => move[0] <= distance);
@@ -213,8 +216,12 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax - y][x_ax].piece.color !== piece.color) {
               distance = y;
-            } else { distance = y_ax - 1 - y - 1; }
-          } else { distance = y; }
+            } else {
+              distance = y_ax - 1 - y - 1;
+            }
+          } else {
+            distance = y;
+          }
         }
 
         //filter impossible offsets
@@ -232,8 +239,12 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax][x_ax - x].piece.color !== piece.color) {
               distance = x;
-            } else { distance = x + 1; }
-          } else { distance = x; }
+            } else {
+              distance = x + 1;
+            }
+          } else {
+            distance = x;
+          }
         }
 
         //filter impossible offsets
@@ -251,8 +262,12 @@ export default function (piece) {
             found = true;
             if (compboard[y_ax][x_ax + x].piece.color !== piece.color) {
               distance = x;
-            } else { distance = x - 1; }
-          } else { distance = x; }
+            } else {
+              distance = x - 1;
+            }
+          } else {
+            distance = x;
+          }
         }
         //filter impossible offsets
         possibleOffsets = possibleOffsets.filter((move) => move[1] <= distance);
@@ -426,7 +441,11 @@ export default function (piece) {
         }
 
         possibleOffsets = possibleOffsets.filter((move) => {
-          return ((move[0] > -distance && move[1] < -distance) || (move[0] > 0 || move[1] > 0))
+          return (
+            (move[0] > -distance && move[1] < -distance) ||
+            move[0] > 0 ||
+            move[1] > 0
+          );
         });
       }
 
@@ -732,10 +751,11 @@ export default function (piece) {
         possibleOffsets = possibleOffsets.filter((move) => {
           if (
             (move[0] > 0 - distance && move[1] < 0 - distance) ||
-            (move[0] == 0 || move[1] == 0) ||
-            (move[0] != move[1]) ||
-            (move[0] >= 0) ||
-            (move[1] >= 0)
+            move[0] == 0 ||
+            move[1] == 0 ||
+            move[0] != move[1] ||
+            move[0] >= 0 ||
+            move[1] >= 0
           ) {
             return move;
           }
@@ -877,94 +897,24 @@ export default function (piece) {
         }
       }
 
-      //check if able to castle
-      /* 
-        check if king is in check
-        check if !king.hasMoved && (!LeftRook.hasMoved || !RightRook.hasMoved) && make sure they're on the proper squares in case of a FEN or other error
-        check if there are any pieces on the castling squares (remember the unused square on queenside)
-        check if there are pieces watching the castling squares that the king would pass or land on (not the unused square on queenside)
-      */
+      let castles = getCastles(piece);
 
+      if (castles != -1) {
+        let kingside = false;
+        let queenside = false;
 
-      if (piece.hasMoved) { return possibleOffsets; } //if king has moved, return
-
-      let castles = {
-        queen: true,
-        king: true
-      };
-      let rookCheck = (y, x) => compboard[y][x].piece != null && compboard[y][x].piece.symbol == "R" && compboard[y][x].piece.hasMoved == false;
-      
-      if (
-        compboard[piece.color == "Dark" ? 7 : 0][4].piece.color != (piece.color == "Dark" ? "Dark" : "Light") ||
-        compboard[piece.color == "Dark" ? 7 : 0][4].piece.constructor != King ||
-        compboard[piece.color == "Dark" ? 7 : 0][6].piece != null ||
-        compboard[piece.color == "Dark" ? 7 : 0][5].piece != null ||
-        compboard[piece.color == "Dark" ? 7 : 0][3].piece != null ||
-        compboard[piece.color == "Dark" ? 7 : 0][2].piece != null ||
-        compboard[piece.color == "Dark" ? 7 : 0][1].piece != null ||
-        calcChecks(piece) ||
-        (
-          piece.color == "Dark" ? (
-            !rookCheck(7, 7) ||
-            !rookCheck(7, 0)
-          ) : (
-            !rookCheck(0, 7) ||
-            !rookCheck(0, 0)
-          )
-        )
-      ) {
-        //get all watches for opposing color
-        for (let row of compboard) { // could use optimizing
-          for (let sqr of row) {
-            if (!sqr.piece || sqr.piece.color != piece.color) { continue; }
-            for (let watch in calcWatches(sqr.piece)) {
-              if (!Array.isArray(watch) && coordCompare(calcWatches(sqr.piece), piece.location)) { 
-                if (calcWatches(sqr.piece)[1] < 4) {
-                  castles.queen = false;
-                } else {
-                  castles.king = false;
-                }
-              }
-
-              let y = piece.color == "Dark" ? 7 : 0;
-              
-              if (
-                coordCompare(watch, [y, 2]) ||
-                coordCompare(watch, [y, 3]) ||
-                compboard[y][3].piece != null ||
-                compboard[y][2].piece != null ||
-                compboard[y][1].piece != null
-              ) {
-                castles.queen = false; // disallow queen side castling
-              }
-
-              if (
-                coordCompare(watch, [y, 5]) ||
-                coordCompare(watch, [y, 6]) ||
-                compboard[y][6].piece != null ||
-                compboard[y][5].piece != null
-              ) {
-                castles.king = false;
-              }
-
-              if (coordCompare(watch, [y, 4])) {
-                castles.queen = false;
-                castles.king = false;
-              }
-            }
+        castles.forEach((c) => {
+          if (c.toLowerCase() == "k" && !kingside) {
+            possibleOffsets.push([0, 2]);
+            kingside = true;
           }
-        }
+          if (c.toLowerCase() == "q" && !queenside) {
+            possibleOffsets.push([0, -2]);
+            queenside = true;
+          }
+        });
       }
 
-
-      if (castles.king) {
-        possibleOffsets.push([0, 2]);
-      }
-
-      if (castles.queen) {
-        possibleOffsets.push([0, -2]);
-      }
-      
       return possibleOffsets;
     default:
       return;

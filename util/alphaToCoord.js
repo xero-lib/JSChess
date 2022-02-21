@@ -3,7 +3,7 @@ import _ from "lodash";
 
 export default function alphaToCoord(move) {
   if (move.length !== 2) return false;
-  let sep = _.cloneDeep(move.split(''));
+  let sep = _.cloneDeep(move.split(""));
 
   if (!isNaN(parseInt(sep[0]))) return false;
   if (isNaN(parseInt(sep[1]))) return false;

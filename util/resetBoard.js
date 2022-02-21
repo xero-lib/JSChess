@@ -12,7 +12,7 @@ export default function () {
           compboard[y][x].piece = piece;
         }
       });
-  
+
       pieces.light.forEach((piece) => {
         if (coordCompare(piece.defaultPos, [y, x])) {
           compboard[y][x].piece = piece;

@@ -10,15 +10,13 @@ export default function printBoard(compboard = board) {
         // console.log(compboard[y][x])
         process.stdout.write(
           " " +
-            (
-              compboard[y][x].piece.color == "Light"
-                ? chalk.bold.yellow(compboard[y][x].piece.symbol)
-                : chalk.bold.green(compboard[y][x].piece.symbol)
-            )
+            (compboard[y][x].piece.color == "Light"
+              ? chalk.bold.yellow(compboard[y][x].piece.symbol)
+              : chalk.bold.green(compboard[y][x].piece.symbol))
         );
       }
     }
     console.log();
   }
-  console.log()
+  console.log();
 }

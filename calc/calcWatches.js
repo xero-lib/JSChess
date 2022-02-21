@@ -43,11 +43,21 @@ export default function (piece, compboard = board) {
     case Pawn: {
       //check for edge pawn
       if (x_ax === 0) {
-        return [[piece.location[0] + (piece.color == "Dark" ? -1 : 1), piece.location[1] + 1]];
+        return [
+          [
+            piece.location[0] + (piece.color == "Dark" ? -1 : 1),
+            piece.location[1] + 1,
+          ],
+        ];
       }
 
       if (x_ax === 7) {
-        return [[piece.location[0] + (piece.color == "Dark" ? -1 : 1), piece.location[1] - 1]];
+        return [
+          [
+            piece.location[0] + (piece.color == "Dark" ? -1 : 1),
+            piece.location[1] - 1,
+          ],
+        ];
       }
 
       //if not edge pawn
@@ -278,8 +288,8 @@ export default function (piece, compboard = board) {
         //! probably an issue
         possibleOffsets = possibleOffsets.filter((move) => {
           (move[0] >= 0 - distance && move[1] <= distance) ||
-          move[0] >= 0 ||
-          move[1] <= 0
+            move[0] >= 0 ||
+            move[1] <= 0;
         });
       }
 
@@ -432,8 +442,9 @@ export default function (piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => {
           if (
             (0 - move[0] == move[1] && move[1] <= distance) ||
-            move[0] == -move[1] && move[1] < distance ||
-            move[0] == 0 || move[1] == 0 ||
+            (move[0] == -move[1] && move[1] < distance) ||
+            move[0] == 0 ||
+            move[1] == 0 ||
             move[0] >= 0 ||
             move[1] <= 0
           ) {
@@ -454,7 +465,7 @@ export default function (piece, compboard = board) {
 
         possibleOffsets = possibleOffsets.filter((move) => {
           if (
-           (move[0] >= 0 - distance && move[1] <= 0 - distance) ||
+            (move[0] >= 0 - distance && move[1] <= 0 - distance) ||
             move[0] != move[1] ||
             move[0] == 0 ||
             move[1] == 0 ||

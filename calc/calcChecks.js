@@ -10,23 +10,22 @@ import coordCompare from "../util/coordCompare.js";
 export default function calcChecks(piece, in_move = [0, 0]) {
   //check if each offset for a piece will result in a new watches variable for any opponent piece that will cause the king to be watched
 
-  let
-    tstart = _.cloneDeep(piece.location),
+  let tstart = _.cloneDeep(piece.location),
     tmove = _.cloneDeep(in_move),
     tempBoard = _.cloneDeep(compboard),
     tpiece = _.cloneDeep(piece),
     dKingPos,
     lKingPos;
 
-    compboard.forEach((row, y) => {
-      row.forEach((square, x) => {
-        if (square.piece && square.piece.constructor === King) {
-          square.piece.color == "Dark"
-            ? dKingPos = [y, x]
-            : lKingPos = [y, x];
-        }
-      })
-    })
+  compboard.forEach((row, y) => {
+    row.forEach((square, x) => {
+      if (square.piece && square.piece.constructor === King) {
+        square.piece.color == "Dark"
+          ? (dKingPos = [y, x])
+          : (lKingPos = [y, x]);
+      }
+    });
+  });
 
   // dKingPos = dKingPos ? dKingPos : {
   //   compboard
@@ -40,7 +39,7 @@ export default function calcChecks(piece, in_move = [0, 0]) {
   tempBoard[tstart[0]][tstart[1]].piece = null;
   tempBoard[tmove[0]][tmove[1]].piece = tpiece;
   tpiece.location = tmove;
-  
+
   if (tpiece.constructor === King) {
     if (tpiece.color == "Dark") {
       dKingPos = tmove ? tmove : dKingPos;
@@ -71,20 +70,19 @@ export default function calcChecks(piece, in_move = [0, 0]) {
   tempBoard.forEach((row) => {
     row.forEach((square) => {
       //for each square on the tempBoard
-      if (
-        square.piece !== null &&
-        square.piece.color !== turn
-      ) {
+      if (square.piece !== null && square.piece.color !== turn) {
         //if there's a piece on that square
         if (Array.isArray(square.piece.watches[0])) {
           //if watches contains multiple items
           isCheck = square.piece.watches.some((move) => {
-            return move != null ? coordCompare(move, turn == "Dark" ? dKingPos : lKingPos) : null ;
+            return move != null
+              ? coordCompare(move, turn == "Dark" ? dKingPos : lKingPos)
+              : null;
           });
         } else {
-          isCheck = 
-            coordCompare(square.piece.watches, dKingPos) && turn == "Dark" ||
-            coordCompare(square.piece.watches, lKingPos) && turn == "Light";
+          isCheck =
+            (coordCompare(square.piece.watches, dKingPos) && turn == "Dark") ||
+            (coordCompare(square.piece.watches, lKingPos) && turn == "Light");
         }
       }
     });
@@ -101,7 +99,7 @@ export const filterChecks = () => {
         //if a given offset would result in check, filter it
         compboard[i][j].piece.moves = square.piece.moves.filter((move) => {
           // console.log(square.piece, move);
-          return !calcChecks(square.piece, move)
+          return !calcChecks(square.piece, move);
         });
       }
     });
