@@ -4,7 +4,7 @@ A JavaScript chessboard program.
 
 ## Basic Use
 
-- Inside of index.js, you may list (in order) the moves to be made on the board, alternating between light and dark, with the `makeMove("start square", "end square")` function.
+- Inside of index.js, you may list (in order) the moves to be made on the board, alternating between light and dark, with the `makeMove("start square", "end square")` function, with start `"start square"` and `"end square"` both being LetterNumber square coordinates.
 
 - You can optionally set board state from a [FEN String](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) by using the `set_FEN("FEN string")` function.
 
