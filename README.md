@@ -35,3 +35,7 @@ A JavaScript chessboard program.
 - `get_FEN()`
 
   - Returns the FEN String representation of the current board state.
+
+- `set_FEN()`
+
+    - Sets the board state from any valid [FEN String](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) (ex. `set_FEN("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 0"))
