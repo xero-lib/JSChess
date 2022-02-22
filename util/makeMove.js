@@ -9,6 +9,9 @@ import alphaToCoord from "./alphaToCoord.js";
 export let moveCount = 0;
 export let halfMoveCount = 0;
 export let turn = "Light";
+export function getTurn() {
+  return turn;
+}
 export default function makeMove(start, end) {
   refreshBoard();
   if (!alphaToCoord(start) || !alphaToCoord(end)) {

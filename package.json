@@ -17,5 +17,8 @@
   "dependencies": {
     "chalk": "^4.1.1",
     "lodash": "^4.17.21"
+  },
+  "scripts": {
+    "demo": "node demo.js"
   }
 }
