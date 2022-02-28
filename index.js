@@ -3,6 +3,7 @@ export { get_FEN, set_FEN } from "./parse/parseFEN.js";
 export { default as getPly } from "./util/getPly.js";
 export { default as compboard } from "./board/compboard.js"
 export { default as resetBoard } from "./util/resetBoard.js";
+export { default as coordToAlpha } from "./util/coordToAlpha.js";
 export { default as getBoardJSON } from "./util/getBoardJSON.js";
 export { default as makeMove, getTurn } from "./util/makeMove.js";
 
