@@ -17,7 +17,7 @@ export default function makeMove(start, end) {
   if (!alphaToCoord(start) || !alphaToCoord(end)) {
     return -3;
   }
-  console.log(turn);
+  // console.log(turn);
 
   if (!coordToLocation(start).piece) {
     return -1;
@@ -29,7 +29,7 @@ export default function makeMove(start, end) {
       if (turn == "Dark") {
         updateMoveCount(moveCount + 1);
       }
-      printBoard();
+      // printBoard();
       turn = turn == "Light" ? "Dark" : "Light";
       if (coordToPiece(end) || coordToPiece(start)?.constructor == Pawn) {
         updateHalfMove(0);
@@ -39,12 +39,12 @@ export default function makeMove(start, end) {
       return ret;
     } else {
       console.log("Illegal move.");
-      printBoard();
+      // printBoard();
       return -1;
     }
   } else {
-    console.log(`It is not ${turn}'s turn.`);
-    printBoard();
+    console.log(`It is not this colors turn.`);
+    // printBoard();
     return -2;
   }
 }

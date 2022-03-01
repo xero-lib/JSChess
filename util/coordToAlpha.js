@@ -1,6 +1,6 @@
 import files from "../board/files.js";
 
-export default function (...[y, x]) {
+export default function coordToAlpha(...[y, x]) {
     if (isNaN(y) || isNaN(x)) {
         return -1;
     }

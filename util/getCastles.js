@@ -2,6 +2,7 @@ import compboard from "../board/compboard.js";
 import { King } from "../data/classes.js";
 import calcWatches from "../calc/calcWatches.js";
 import coordCompare from "./coordCompare.js";
+import calcChecks from "../calc/calcChecks.js";
 
 export default function getCastles(king) {
   //check if able to castle
@@ -35,7 +36,7 @@ export default function getCastles(king) {
     compboard[king.color == "Dark" ? 7 : 0][3].piece != null ||
     compboard[king.color == "Dark" ? 7 : 0][2].piece != null ||
     compboard[king.color == "Dark" ? 7 : 0][1].piece != null ||
-    calcChecks(piece) ||
+    calcChecks(king) ||
     (king.color == "Dark"
       ? !rookCheck(7, 7) || !rookCheck(7, 0)
       : !rookCheck(0, 7) || !rookCheck(0, 0))

@@ -287,7 +287,7 @@ export default function (piece, compboard = board) {
 
         //! probably an issue
         possibleOffsets = possibleOffsets.filter((move) => {
-          (move[0] >= 0 - distance && move[1] <= distance) ||
+          return (move[0] >= 0 - distance && move[1] <= distance) ||
             move[0] >= 0 ||
             move[1] <= 0;
         });
@@ -479,7 +479,7 @@ export default function (piece, compboard = board) {
       }
 
       watches = [];
-      currentMove;
+      currentMove = null;
       possibleOffsets.forEach((offset) => {
         currentMove = [y_ax + offset[0], x_ax + offset[1]];
         if (currentMove) watches.push(currentMove);
@@ -518,7 +518,7 @@ export default function (piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => move[1] <= 0);
 
       watches = [];
-      currentMove;
+      currentMove = null;
       possibleOffsets.forEach((offset) => {
         currentMove = [y_ax + offset[0], x_ax + offset[1]];
         if (currentMove) watches.push(currentMove);
