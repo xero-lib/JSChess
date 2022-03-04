@@ -1,12 +1,14 @@
-import _ from "lodash";
 import offsets from "../data/offsets.js";
 import compboard from "../board/compboard.js";
 import getCastles from "../util/getCastles.js";
 import coordCompare from "../util/coordCompare.js";
 import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
+import { filterChecks } from "./calcChecks.js";
+import persist from "../util/persist.js"
 
 export default function calcOffsets(piece) {
-  let possibleOffsets,
+  let
+    possibleOffsets,
     [y_ax, x_ax] = piece.location,
     found = false,
     distance = 0;
@@ -15,10 +17,10 @@ export default function calcOffsets(piece) {
 
   switch (piece.constructor) {
     case Pawn:
-      possibleOffsets = _.cloneDeep((piece.color == "Dark") ? offsets.pawn.dark : offsets.pawn.light);
+      possibleOffsets = persist((piece.color == "Dark") ? offsets.pawn.dark : offsets.pawn.light);
       break;
     default:
-      possibleOffsets = _.cloneDeep(offsets[piece.constructor.name.toLowerCase()]);
+      possibleOffsets = persist(offsets[piece.constructor.name.toLowerCase()]);
   }
 
   
@@ -82,7 +84,7 @@ export default function calcOffsets(piece) {
         }
       } else {
 
-        if (compboard[y_ax + 1][x_ax].piece !== null) { possibleOffsets.move = null; }
+        if (compboard[y_ax + 1][x_ax].piece !== null) { possibleOffsets.move = []; }
 
         if (!piece.hasMoved) {
           if (
@@ -114,6 +116,19 @@ export default function calcOffsets(piece) {
         x_ax != 7 &&
         compboard[y_ax][x_ax + 1].piece?.isEnPassantable // adjacent en pessantable pawn
       ) { possibleOffsets.capture.push([(piece.color == "Dark" ? -1 : 1), 1]); }
+      
+      let flat = [];
+      Object.keys(possibleOffsets).forEach((key) => {
+        if (possibleOffsets[key] && possibleOffsets[key] !== null) {
+          if (Array.isArray(possibleOffsets[key][0])) {
+            flat.push(...possibleOffsets[key]);
+          } else {
+            flat.push(possibleOffsets[key]);
+          }
+        }
+      });
+      
+      possibleOffsets = filterChecks(piece, flat.filter((i) => !isNaN(i[0])), [y_ax, x_ax]);
 
       return possibleOffsets;
     case Rook:
@@ -210,6 +225,8 @@ export default function calcOffsets(piece) {
         possibleOffsets = possibleOffsets.filter((move) => move[1] <= distance);
       }
 
+      possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
+
       return possibleOffsets;
     case Knight:
       //filter y edges
@@ -239,6 +256,9 @@ export default function calcOffsets(piece) {
           });
         }
       });
+
+      possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
+
       return possibleOffsets;
     case Bishop:
       //check corners
@@ -358,6 +378,8 @@ export default function calcOffsets(piece) {
             move[1] <= 0
         });
       }
+
+      possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
       
       return possibleOffsets;
     case Queen:
@@ -574,6 +596,9 @@ export default function calcOffsets(piece) {
 );
       }
 
+      possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
+
+
       return possibleOffsets;
     case King:
       //check for corners
@@ -648,6 +673,9 @@ export default function calcOffsets(piece) {
           }
         });
       }
+
+      possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
+      
       return possibleOffsets;
     default:
       return;

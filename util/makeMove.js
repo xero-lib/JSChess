@@ -1,5 +1,5 @@
 import move from "./move.js";
-import printBoard from "./printBoard.js";
+// import printBoard from "./printBoard.js";
 import coordToPiece from "./coordToPiece.js";
 import refreshBoard from "./refreshBoard.js";
 import coordToLocation from "./coordToLocation.js";
@@ -17,7 +17,6 @@ export default function makeMove(start, end) {
   if (!alphaToCoord(start) || !alphaToCoord(end)) {
     return -3;
   }
-  // console.log(turn);
 
   if (!coordToLocation(start).piece) {
     return -1;

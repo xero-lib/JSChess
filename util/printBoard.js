@@ -7,7 +7,6 @@ export default function printBoard(compboard = board) {
       if (compboard[y][x].piece === null) {
         process.stdout.write(" " + compboard[y][x].color);
       } else {
-        // console.log(compboard[y][x])
         process.stdout.write(
           " " +
             (compboard[y][x].piece.color == "Light"

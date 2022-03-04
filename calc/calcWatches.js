@@ -3,33 +3,31 @@ import board from "../board/compboard.js";
 import offsets from "../data/offsets.js";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
 import coordCompare from "../util/coordCompare.js";
+import persist from "../util/persist.js";
 
 export default function (piece, compboard = board) {
   let watches = [],
     currentMove = [],
     possibleOffsets = [];
 
-  switch (piece.constructor) {
-    case Pawn:
-      if (piece.color == "Dark")
-        possibleOffsets = _.cloneDeep(offsets.pawn.dark["capture"]);
-      else if (piece.color == "Light")
-        possibleOffsets = _.cloneDeep(offsets.pawn.light["capture"]);
+  switch (piece.symbol.toLowerCase()) {
+    case 'p':
+      possibleOffsets = persist(offsets.pawn[piece.color.toLowerCase()].capture);
       break;
-    case Rook:
-      possibleOffsets = _.cloneDeep(offsets.rook);
+    case 'r':
+      possibleOffsets = persist(offsets.rook);
       break;
-    case Knight:
-      possibleOffsets = _.cloneDeep(offsets.knight);
+    case 'n':
+      possibleOffsets = persist(offsets.knight);
       break;
-    case Bishop:
-      possibleOffsets = _.cloneDeep(offsets.bishop);
+    case 'b':
+      possibleOffsets = persist(offsets.bishop);
       break;
-    case Queen:
-      possibleOffsets = _.cloneDeep(offsets.queen);
+    case 'q':
+      possibleOffsets = persist(offsets.queen);
       break;
-    case King:
-      possibleOffsets = _.cloneDeep(offsets.king);
+    case 'k':
+      possibleOffsets = persist(offsets.king);
       break;
   }
 
@@ -37,7 +35,7 @@ export default function (piece, compboard = board) {
   let distance = 0;
   let [y_ax, x_ax] = piece.location;
 
-  if (y_ax == undefined || x_ax == undefined) return null;
+  if (y_ax == undefined || x_ax == undefined) return [];
 
   switch (piece.symbol.toLowerCase()) {
     case 'p': {

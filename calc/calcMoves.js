@@ -38,6 +38,6 @@ export default function calcMoves(piece) {
       }
     });
   }
-  // console.log(pm);
+  
   return pm;
 }
