@@ -1,3 +1,6 @@
+import refreshBoard from "./util/refreshBoard.js";
+refreshBoard();
+
 /* re-exports */
 export { get_FEN, set_FEN } from "./parse/parseFEN.js"; 
 export { default as getPly } from "./util/getPly.js";

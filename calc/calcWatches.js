@@ -7,7 +7,7 @@ import coordCompare from "../util/coordCompare.js";
 export default function (piece, compboard = board) {
   let watches = [],
     currentMove = [],
-    possibleOffsets;
+    possibleOffsets = [];
 
   switch (piece.constructor) {
     case Pawn:
@@ -39,8 +39,8 @@ export default function (piece, compboard = board) {
 
   if (y_ax == undefined || x_ax == undefined) return null;
 
-  switch (piece.constructor) {
-    case Pawn: {
+  switch (piece.symbol.toLowerCase()) {
+    case 'p': {
       //check for edge pawn
       if (x_ax === 0) {
         return [
@@ -73,10 +73,10 @@ export default function (piece, compboard = board) {
             [piece.location[0] - 1, piece.location[1] - 1],
           ];
         default:
-          return null;
+          return [];
       }
     }
-    case Rook: {
+    case 'r': {
       if (y_ax == 7)
         possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0);
       if (y_ax == 0)
@@ -90,6 +90,7 @@ export default function (piece, compboard = board) {
       if (y_ax !== 7) {
         distance = 0;
         found = false;
+
         for (let y = 1; y < 7 - y_ax && found === false; y++) {
           if (compboard[y_ax + y][x_ax].piece !== null) {
             found = true;
@@ -97,9 +98,7 @@ export default function (piece, compboard = board) {
           distance = y;
         }
 
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] <= distance || move[0] <= 0
-        );
+        possibleOffsets = possibleOffsets.filter((move) => move[0] <= distance || move[0] <= 0);
       }
 
       //search distance down
@@ -155,9 +154,9 @@ export default function (piece, compboard = board) {
         if (currentMove) watches.push(currentMove);
       });
 
-      return watches;
+      return watches ?? [];
     }
-    case Knight: {
+    case 'n': {
       //filter y edges
       if (y_ax == 0)
         possibleOffsets = possibleOffsets.filter((move) => move[0] > 0);
@@ -183,9 +182,9 @@ export default function (piece, compboard = board) {
         if (currentMove) watches.push(currentMove);
       });
 
-      return watches;
+      return watches ?? [];
     }
-    case Bishop: {
+    case 'b': {
       //check corners
       if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
@@ -262,8 +261,9 @@ export default function (piece, compboard = board) {
           if (
             compboard[y_ax - i][x_ax - i]?.piece !== null &&
             compboard[y_ax - i][x_ax - i]?.piece !== undefined
-          )
+          ) {
             found = true;
+          }
           distance = i;
         }
 
@@ -299,9 +299,9 @@ export default function (piece, compboard = board) {
         if (currentMove) watches.push(currentMove);
       });
 
-      return watches;
+      return watches ?? [];
     }
-    case Queen: {
+    case 'q': {
       //check for corners
       if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
@@ -485,9 +485,9 @@ export default function (piece, compboard = board) {
         if (currentMove) watches.push(currentMove);
       });
 
-      return watches;
+      return watches ?? [];
     }
-    case King: {
+    case 'k': {
       //check for corners
       if (coordCompare([y_ax, x_ax], [0, 0])) {
         possibleOffsets = possibleOffsets.filter(
@@ -524,7 +524,7 @@ export default function (piece, compboard = board) {
         if (currentMove) watches.push(currentMove);
       });
 
-      return watches;
+      return watches ?? [];
     }
     default: {
       return;
