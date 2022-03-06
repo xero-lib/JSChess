@@ -3,16 +3,16 @@ import move from "./move.js";
 import coordToPiece from "./coordToPiece.js";
 import refreshBoard from "./refreshBoard.js";
 import coordToLocation from "./coordToLocation.js";
-import { Pawn } from "../data/classes.js";
 import alphaToCoord from "./alphaToCoord.js";
 
 export let moveCount = 0;
 export let halfMoveCount = 0;
 export let turn = "Light";
+
 export function getTurn() {
   return turn;
 }
-export default function makeMove(start, end) {
+export default function makeMove(start, end, promote = "q") {
   refreshBoard();
   if (!alphaToCoord(start) || !alphaToCoord(end)) {
     return -3;
@@ -22,15 +22,15 @@ export default function makeMove(start, end) {
     return -1;
   }
 
-  if (coordToPiece(start).color == turn) {
-    let ret = move(coordToLocation(start).piece, end);
+  if (coordToPiece(start).color === turn) {
+    let ret = move(coordToLocation(start).piece, end, promote);
     if (ret) {
-      if (turn == "Dark") {
+      if (turn === "Dark") {
         updateMoveCount(moveCount + 1);
       }
       // printBoard();
-      turn = turn == "Light" ? "Dark" : "Light";
-      if (coordToPiece(end) || coordToPiece(start)?.constructor == Pawn) {
+      turn = turn === "Light" ? "Dark" : "Light";
+      if (coordToPiece(end) || coordToPiece(start)?.symbol.toLowerCase() === 'p') {
         updateHalfMove(0);
       } else {
         updateHalfMove(halfMoveCount + 1);
@@ -49,7 +49,7 @@ export default function makeMove(start, end) {
 }
 
 export function updateTurn(tcolor) {
-  turn = tcolor.toLowerCase() == "b" ? "Dark" : "Light";
+  turn = tcolor.toLowerCase() === "b" ? "Dark" : "Light";
 }
 
 export function updateHalfMove(hmove) {

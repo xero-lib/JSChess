@@ -1,4 +1,3 @@
-import { Pawn } from "../data/classes.js";
 import calcOffsets from "./calcOffsets.js";
 
 export default function calcMoves(piece) {
@@ -9,15 +8,15 @@ export default function calcMoves(piece) {
 
   let pm = []; //possible moves
 
-  if (Object.keys(ao).length == 0) {
+  if (Object.keys(ao).length === 0) {
     return [];
   }
 
-  if (piece.constructor == Pawn) {
+  if (piece.symbol.toLowerCase() === 'p') {
     let allMoves = [];
 
     Object.keys(ao).forEach((key) => {
-      if (ao[key] != null && ao[key].length != 0) {
+      if (ao[key] !== null && ao[key].length !== 0) {
         Array.isArray(ao[key][0]) // a little dangerous
           ? allMoves.push(...ao[key])
           : allMoves.push(ao[key]);
@@ -25,7 +24,7 @@ export default function calcMoves(piece) {
     });
 
     allMoves.forEach((offset) => {
-      if (offset.length != 0) {
+      if (offset.length !== 0) {
         pm.push([y_ax + offset[0], x_ax + offset[1]]);
       }
     });

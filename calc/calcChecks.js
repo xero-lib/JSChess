@@ -1,5 +1,4 @@
 import compboard from "../board/compboard.js";
-import { Pawn, Rook, Knight, Bishop, Queen, King } from "../data/classes.js";
 import coordCompare from "../util/coordCompare.js";
 import persist from "../util/persist.js";
 import getAllWatches from "../util/getAllWatches.js";
@@ -18,30 +17,44 @@ export default function calcChecks(piece, in_move = [0, 0], location) {
     lKingPos;
 
   /*
-    make move on temp board
+    make move on temp board : done
     generate opposing watches for pieces on temp board
     check if any watches from artificial move land on the current colors king
     return if self check occurs
   */
 
+    /* ISSUES
+
+    */
+  
   /* GENERATE MOVE */
   tempBoard[location[0]][location[1]].piece = null;
-  console.log('imove', in_move);
   tempBoard[in_move[0]][in_move[1]].piece = tpiece;
 
-  tempBoard.forEach((row, y) => {
-    row.forEach((square, x) => {
-      if (square.piece && square.piece.symbol.toLowerCase() === 'k') {
-        square.piece.color == "Dark"
-          ? (dKingPos = [y, x])
-          : (lKingPos = [y, x]);
-      }
-    });
-  });
+  /* FIND KING POSITIONS */
+  tempBoard.forEach((row, y) => row.forEach((square, x) => {
+    if (square.piece && square.piece.symbol.toLowerCase() === 'k') {
+      square.piece.color === "Dark"
+        ? (dKingPos = [y, x])
+        : (lKingPos = [y, x]);
+    }
+  }));
 
+  let board_buff = []
+  tempBoard.forEach((row) => {
+    let rbuf = [];
+    row.forEach((square) => {
+      if (square.piece) {
+        rbuf.push(square.piece.symbol);
+      } else {
+        rbuf.push(square.color);
+      }
+    })
+    board_buff.push(rbuf);
+  })
   /* GENERATE WATCHES */
   let opposingWatches = getAllWatches((getPly() === "Dark" ? "Light" : "Dark"), tempBoard);
-
+  
   /* CALC CHECK */
   let isCheck = false;
   let kingPos = piece.color === "Dark" ? dKingPos : lKingPos;

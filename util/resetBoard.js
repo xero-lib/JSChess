@@ -1,23 +1,9 @@
-import pieces from "../data/pieces.js";
-import compboard from "../board/compboard.js";
-import coordCompare from "./coordCompare.js";
 import clearBoard from "./clearBoard.js";
+import { updateTurn } from "./makeMove.js";
+import { initBoard } from "../board/compboard.js";
 
-export default function () {
+export default function resetBoard() {
   clearBoard();
-  for (let y = 0; y < 8; y++) {
-    for (let x = 0; x < 8; x++) {
-      pieces.dark.forEach((piece) => {
-        if (coordCompare(piece.defaultPos, [y, x])) {
-          compboard[y][x].piece = piece;
-        }
-      });
-
-      pieces.light.forEach((piece) => {
-        if (coordCompare(piece.defaultPos, [y, x])) {
-          compboard[y][x].piece = piece;
-        }
-      });
-    }
-  }
+  initBoard();
+  updateTurn("Light");
 }

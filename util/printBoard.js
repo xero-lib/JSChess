@@ -9,7 +9,7 @@ export default function printBoard(compboard = board) {
       } else {
         process.stdout.write(
           " " +
-            (compboard[y][x].piece.color == "Light"
+            (compboard[y][x].piece.color === "Light"
               ? chalk.bold.yellow(compboard[y][x].piece.symbol)
               : chalk.bold.green(compboard[y][x].piece.symbol))
         );
