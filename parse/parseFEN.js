@@ -15,6 +15,7 @@ import refreshBoard from "../util/refreshBoard.js";
 import letterToColor from "../util/letterToColor.js";
 import letterToPiece from "../util/letterToPiece.js";
 import { King, Pawn, Queen } from "../data/classes.js";
+import persist from "../util/persist.js";
 
 //generate board
 export function set_FEN(FEN_string) {
@@ -110,9 +111,9 @@ export function get_FEN() {
 
   /* pieces/en passant segment */
   let line = 0;
-  let en_passant;
+  let en_passant = "";
 
-  for (let y of compboard.reverse()) {
+  for (let y of persist(compboard).reverse()) {
     let buffer = 0;
     for (let x of y) {
       if (x.piece?.isEnpassantable) {
@@ -182,13 +183,14 @@ export function get_FEN() {
   out_FEN.push(castles.length === 0 ? " -" : " " + castles.join(""));
 
   /* add en passant */
-  out_FEN.push(en_passant ?? " -");
+  out_FEN.push(en_passant.length !== 0 ? en_passant : " -");
 
   /* half move segment */
   out_FEN.push(" " + halfMoveCount);
 
   /* full move segment */
   out_FEN.push(" " + moveCount);
+  console.log(out_FEN.join(""));
 
   return out_FEN.join("");
 }

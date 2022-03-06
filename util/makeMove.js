@@ -4,6 +4,7 @@ import coordToPiece from "./coordToPiece.js";
 import refreshBoard from "./refreshBoard.js";
 import coordToLocation from "./coordToLocation.js";
 import alphaToCoord from "./alphaToCoord.js";
+import persist from "./persist.js";
 
 export let moveCount = 0;
 export let halfMoveCount = 0;
@@ -23,6 +24,8 @@ export default function makeMove(start, end, promote = "q") {
   }
 
   if (coordToPiece(start).color === turn) {
+    let piece = persist(coordToPiece(start));
+    let isTaking = persist(coordToPiece(end));
     let ret = move(coordToLocation(start).piece, end, promote);
     if (ret) {
       if (turn === "Dark") {
@@ -30,9 +33,10 @@ export default function makeMove(start, end, promote = "q") {
       }
       // printBoard();
       turn = turn === "Light" ? "Dark" : "Light";
-      if (coordToPiece(end) || coordToPiece(start)?.symbol.toLowerCase() === 'p') {
+      if (isTaking || piece.symbol.toLowerCase() === 'p') {
         updateHalfMove(0);
       } else {
+        console.log(halfMoveCount);
         updateHalfMove(halfMoveCount + 1);
       }
       return ret;

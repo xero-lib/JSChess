@@ -26,11 +26,19 @@ export default function calcChecks(piece, in_move = [0, 0], location) {
     /* ISSUES
 
     */
-  
+   
   /* GENERATE MOVE */
+  if (piece.symbol.toLowerCase() === 'p' && piece.location[1] !== in_move[1] && tempBoard[in_move[0]][in_move[1]].piece === null) {
+    if (tempBoard[location[0]][location[1]+1].piece.isEnPassantable) {
+      tempBoard[location[0]][location[1]+1].piece = null;
+    } else if (tempBoard[location[0]][location[1]-1].piece.isEnPassantable) {
+      tempBoard[location[0]][location[1]-1].piece = null;
+    }
+  }
+
   tempBoard[location[0]][location[1]].piece = null;
   tempBoard[in_move[0]][in_move[1]].piece = tpiece;
-
+  
   /* FIND KING POSITIONS */
   tempBoard.forEach((row, y) => row.forEach((square, x) => {
     if (square.piece && square.piece.symbol.toLowerCase() === 'k') {

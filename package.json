@@ -14,10 +14,7 @@
     "url": "https://github.com/xero-lib/JSChess/issues"
   },
   "homepage": "https://github.com/xero-lib/JSChess#readme",
-  "dependencies": {
-    "chalk": "^4.1.1",
-    "lodash": "^4.17.21"
-  },
+  "dependencies": {},
   "scripts": {
     "demo": "node demo.js"
   }
