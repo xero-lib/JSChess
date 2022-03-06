@@ -29,9 +29,9 @@ export default function calcChecks(piece, in_move = [0, 0], location) {
    
   /* GENERATE MOVE */
   if (piece.symbol.toLowerCase() === 'p' && piece.location[1] !== in_move[1] && tempBoard[in_move[0]][in_move[1]].piece === null) {
-    if (tempBoard[location[0]][location[1]+1].piece.isEnPassantable) {
+    if (location[1] !== 7 && tempBoard[location[0]][location[1]+1].piece?.isEnPassantable && tempBoard[location[0]][location[1]+1].piece?.color !== piece.color) {
       tempBoard[location[0]][location[1]+1].piece = null;
-    } else if (tempBoard[location[0]][location[1]-1].piece.isEnPassantable) {
+    } else if (location[1] !== 0 && tempBoard[location[0]][location[1]-1]?.piece?.isEnPassantable  && tempBoard[location[0]][location[1]-1].piece?.color !== piece.color) {
       tempBoard[location[0]][location[1]-1].piece = null;
     }
   }
@@ -84,6 +84,7 @@ export default function calcChecks(piece, in_move = [0, 0], location) {
 export function filterChecks(piece, possibleOffsets, [y_ax, x_ax]) {
   if (possibleOffsets.length === 0) { return; }
   return possibleOffsets.filter((offset) => {
+    // console.log(offset);
     return !calcChecks(piece, [offset[0]+y_ax, offset[1]+x_ax], [y_ax, x_ax]);
   });
 }

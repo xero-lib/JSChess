@@ -190,7 +190,6 @@ export function get_FEN() {
 
   /* full move segment */
   out_FEN.push(" " + moveCount);
-  console.log(out_FEN.join(""));
 
   return out_FEN.join("");
 }

@@ -31,12 +31,13 @@ export default function calcOffsets(piece) {
       if (x_ax === 7) { possibleOffsets.capture = possibleOffsets.capture.filter((move) => move[1] !== 1); }
 
       //remove possible first moves if piece hasMoved
-      if (piece.hasMoved) { possibleOffsets.first = null; }
+      if (piece.hasMoved) { possibleOffsets.first = []; }
 
       //check color
       if (piece.color === "Dark") {
         if (compboard[y_ax - 1][x_ax].piece !== null) {
           possibleOffsets.move = [];
+          possibleOffsets.first =[];
         }
 
         //if piece has not moved
@@ -45,11 +46,11 @@ export default function calcOffsets(piece) {
             compboard[y_ax - 1][x_ax].piece !== null &&
             compboard[y_ax - 2][x_ax].piece !== null
           ) {
-            possibleOffsets.first = possibleOffsets.first.filter((move) => move[0] !== -2);
+            possibleOffsets.first = [];
           }
 
           if (compboard[y_ax - 1][x_ax].piece !== null) {
-            possibleOffsets.move = possibleOffsets.move?.filter((move) => move[0] !== -1);
+            possibleOffsets.move = [];
           }
         } else {
           possibleOffsets.first = [];
@@ -117,6 +118,8 @@ export default function calcOffsets(piece) {
         compboard[y_ax][x_ax + 1].piece?.isEnPassantable // adjacent en pessantable pawn
       ) { possibleOffsets.capture.push([(piece.color === "Dark" ? -1 : 1), 1]); }
       
+      if (compboard[y_ax - 2]) { console.log(1, persist(possibleOffsets), [y_ax, x_ax], compboard[y_ax - 2][x_ax].piece?.symbol); }
+
       let flat = [];
       Object.keys(possibleOffsets).forEach((key) => {
         if (possibleOffsets[key] && possibleOffsets[key] !== null) {
@@ -127,7 +130,7 @@ export default function calcOffsets(piece) {
           }
         }
       });
-      
+
       possibleOffsets = filterChecks(piece, flat.filter((i) => !isNaN(i[0])), [y_ax, x_ax]);
 
       return possibleOffsets;

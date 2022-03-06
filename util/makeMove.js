@@ -5,6 +5,11 @@ import refreshBoard from "./refreshBoard.js";
 import coordToLocation from "./coordToLocation.js";
 import alphaToCoord from "./alphaToCoord.js";
 import persist from "./persist.js";
+import getWatches from "./getAllWatches.js";
+import getPly from "./getPly.js";
+import compboard from "../board/compboard.js";
+import coordCompare from "./coordCompare.js";
+import getMoves from "./getAllMoves.js"
 
 export let moveCount = 0;
 export let halfMoveCount = 0;
@@ -26,6 +31,7 @@ export default function makeMove(start, end, promote = "q") {
   if (coordToPiece(start).color === turn) {
     let piece = persist(coordToPiece(start));
     let isTaking = persist(coordToPiece(end));
+
     let ret = move(coordToLocation(start).piece, end, promote);
     if (ret) {
       if (turn === "Dark") {
@@ -36,9 +42,61 @@ export default function makeMove(start, end, promote = "q") {
       if (isTaking || piece.symbol.toLowerCase() === 'p') {
         updateHalfMove(0);
       } else {
-        console.log(halfMoveCount);
         updateHalfMove(halfMoveCount + 1);
       }
+
+      /* spec conditions */
+      let isLight = getPly() === "Dark"; //inverted because move has already been made
+      let darkWatches = getWatches("Dark");
+      let lightWatches = getWatches("Light");
+      let darkMoves = getMoves("Dark");
+      let lightMoves = getMoves("Light");
+      console.log("darkMoves", darkMoves, "lightMoves", lightMoves);
+
+      let 
+        dKingPos,
+        lKingPos;
+        
+
+      compboard.forEach((row, y) => row.forEach((square, x) => {
+        if (square.piece && square.piece.symbol.toLowerCase() === 'k') {
+          square.piece.color === "Dark"
+            ? (dKingPos = [y, x])
+            : (lKingPos = [y, x]);
+        }
+      }));
+
+      //check
+        //if watches land on opposing king but opponent still has moves, return 1
+        (isLight ? lightWatches : darkWatches).forEach((watch) => {
+          if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && (isLight ? darkMoves : lightMoves).length !== 0) {
+            console.log("check!");
+            return 1;
+          }
+        });
+      //checkmate
+        //if watches land on opposing king and opponent has no moves, return 2
+        (isLight ? lightWatches : darkWatches).forEach((watch) => {
+          if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && (isLight ? darkMoves : lightMoves).length === 0) {
+            console.log("checkmate!");
+            return 2;
+          }
+        });
+      //draw
+        //if watches do not land on opposing king and opponent has no moves, return 3
+        let isCheck = false;
+        for (let watch of (isLight ? lightWatches : darkWatches)) {
+          if (coordCompare(watch, (isLight ? dKingPos : lKingPos))) {
+            isCheck = true;
+            break;
+          }
+        };
+        if (!isCheck && (isLight ? darkMoves : lightMoves).length === 0) {
+          console.log("Draw by stalemate!");
+          return 3;
+        }
+        
+
       return ret;
     } else {
       console.log("Illegal move.");

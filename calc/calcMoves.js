@@ -5,6 +5,7 @@ export default function calcMoves(piece) {
 
   let [y_ax, x_ax] = piece.location;
   let ao = calcOffsets(piece); //available offsets
+  if (!ao) { return []; }
 
   let pm = []; //possible moves
 
