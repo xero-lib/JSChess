@@ -50,7 +50,6 @@ export default function makeMove(start, end, promote = "q") {
       let opposingWatches = getWatches((isLight ? "Light" : "Dark")); //inverted because move has already been made
       let opposingMoves = getMoves((isLight ? "Dark" : "Light"));
       let shouldRet = false;
-      console.log(opposingWatches)
 
       let 
         dKingPos,
@@ -69,7 +68,7 @@ export default function makeMove(start, end, promote = "q") {
         //if watches land on opposing king but opponent still has moves, return 1
         opposingWatches.forEach((watch) => {
           if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && opposingMoves.length !== 0) {
-            console.log("check!");
+            console.log("Check!");
             shouldRet = true;
           }
         });
@@ -78,7 +77,7 @@ export default function makeMove(start, end, promote = "q") {
         //if watches land on opposing king and opponent has no moves, return 2
         opposingWatches.forEach((watch) => {
           if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && opposingMoves.length === 0) {
-            console.log("checkmate!");
+            console.log("Checkmate!");
             shouldRet = true;
           }
         });
