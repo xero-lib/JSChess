@@ -1,9 +1,9 @@
 import files from "../board/files.js";
-import _ from "lodash";
+import persist from "./persist.js";
 
 export default function alphaToCoord(move) {
   if (move.length !== 2) return false;
-  let sep = _.cloneDeep(move.split(""));
+  let sep = persist(move.split(""));
 
   if (!isNaN(parseInt(sep[0]))) return false;
   if (isNaN(parseInt(sep[1]))) return false;

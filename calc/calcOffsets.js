@@ -37,13 +37,13 @@ export default function calcOffsets(piece) {
       if (piece.color === "Dark") {
         if (compboard[y_ax - 1][x_ax].piece !== null) {
           possibleOffsets.move = [];
-          possibleOffsets.first =[];
+          possibleOffsets.first = [];
         }
 
         //if piece has not moved
         if (!piece.hasMoved) {
           if (
-            compboard[y_ax - 1][x_ax].piece !== null &&
+            compboard[y_ax - 1][x_ax].piece !== null ||
             compboard[y_ax - 2][x_ax].piece !== null
           ) {
             possibleOffsets.first = [];
@@ -118,8 +118,6 @@ export default function calcOffsets(piece) {
         compboard[y_ax][x_ax + 1].piece?.isEnPassantable // adjacent en pessantable pawn
       ) { possibleOffsets.capture.push([(piece.color === "Dark" ? -1 : 1), 1]); }
       
-      if (compboard[y_ax - 2]) { console.log(1, persist(possibleOffsets), [y_ax, x_ax], compboard[y_ax - 2][x_ax].piece?.symbol); }
-
       let flat = [];
       Object.keys(possibleOffsets).forEach((key) => {
         if (possibleOffsets[key] && possibleOffsets[key] !== null) {

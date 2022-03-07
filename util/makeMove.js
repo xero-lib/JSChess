@@ -47,11 +47,10 @@ export default function makeMove(start, end, promote = "q") {
 
       /* spec conditions */
       let isLight = getPly() === "Dark"; //inverted because move has already been made
-      let darkWatches = getWatches("Dark");
-      let lightWatches = getWatches("Light");
-      let darkMoves = getMoves("Dark");
-      let lightMoves = getMoves("Light");
-      console.log("darkMoves", darkMoves, "lightMoves", lightMoves);
+      let opposingWatches = getWatches((isLight ? "Light" : "Dark")); //inverted because move has already been made
+      let opposingMoves = getMoves((isLight ? "Dark" : "Light"));
+      let shouldRet = false;
+      console.log(opposingWatches)
 
       let 
         dKingPos,
@@ -68,30 +67,32 @@ export default function makeMove(start, end, promote = "q") {
 
       //check
         //if watches land on opposing king but opponent still has moves, return 1
-        (isLight ? lightWatches : darkWatches).forEach((watch) => {
-          if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && (isLight ? darkMoves : lightMoves).length !== 0) {
+        opposingWatches.forEach((watch) => {
+          if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && opposingMoves.length !== 0) {
             console.log("check!");
-            return 1;
+            shouldRet = true;
           }
         });
+        if (shouldRet) { return 1; }
       //checkmate
         //if watches land on opposing king and opponent has no moves, return 2
-        (isLight ? lightWatches : darkWatches).forEach((watch) => {
-          if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && (isLight ? darkMoves : lightMoves).length === 0) {
+        opposingWatches.forEach((watch) => {
+          if (coordCompare(watch, (isLight ? dKingPos : lKingPos)) && opposingMoves.length === 0) {
             console.log("checkmate!");
-            return 2;
+            shouldRet = true;
           }
         });
+        if (shouldRet) { return 2; }
       //draw
         //if watches do not land on opposing king and opponent has no moves, return 3
         let isCheck = false;
-        for (let watch of (isLight ? lightWatches : darkWatches)) {
+        for (let watch of opposingWatches) {
           if (coordCompare(watch, (isLight ? dKingPos : lKingPos))) {
             isCheck = true;
             break;
           }
         };
-        if (!isCheck && (isLight ? darkMoves : lightMoves).length === 0) {
+        if (!isCheck && opposingMoves.length === 0) {
           console.log("Draw by stalemate!");
           return 3;
         }

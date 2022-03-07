@@ -1,6 +1,6 @@
 import { halfMoveCount } from "./makeMove.js";
 import compboard from "../board/compboard.js";
-import printBoard from "./printBoard.js";
+// import printBoard from "./printBoard.js";
 import resetBoard from "./resetBoard.js";
 
 export default function refreshBoard() {
