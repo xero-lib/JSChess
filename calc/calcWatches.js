@@ -256,10 +256,7 @@ export default function calcWatches(piece, compboard = board) {
         found = false;
 
         for (let i = 1; i <= x_ax && i <= y_ax && found === false; i++) {
-          if (
-            compboard[y_ax - i][x_ax - i]?.piece !== null &&
-            compboard[y_ax - i][x_ax - i]?.piece !== undefined
-          ) {
+          if (compboard[y_ax - i][x_ax - i]?.piece !== null) {
             found = true;
           }
           distance = i;
@@ -351,9 +348,9 @@ export default function calcWatches(piece, compboard = board) {
         distance = 0;
         found = false;
 
-        for (let y = y_ax - 1; y > 0 && found === false; y--) {
-          if (compboard[y][x_ax].piece !== null) found = true;
-          distance = y_ax - 1;
+        for (let y = 1; y <= y_ax && found === false; y++) {
+          if (compboard[y_ax - y][x_ax].piece !== null) found = true;
+          distance = y;
         }
 
         possibleOffsets = possibleOffsets.filter(
