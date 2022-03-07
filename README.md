@@ -18,7 +18,7 @@ A JavaScript chessboard program.
 
 - `makeMove()`
 
-  - Takes 2 parameters, a start and end position, both in "LetterNumber" format (ex. `makeMove("e2", "e4")`). If the move is illegal or there is no piece on the starting square, makeMove will return -1. If it is not the players turn, it will return -2. If the input is invalid, it will return -3.
+  - Takes 2 parameters, a start and end position, both in "LetterNumber" format (ex. `makeMove("e2", "e4")`). If the move results in check, makeMove will return 1. If the move results in checkmate, it will return 2. If the move results in a stalemate, it wrill return 3. If the move is illegal or there is no piece on the starting square, it will return -1. If it is not the players turn, it will return -2. If the input is invalid, it will return -3.
 
 - `getPly()`
 
