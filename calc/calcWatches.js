@@ -461,7 +461,7 @@ export default function calcWatches(piece, compboard = board) {
 
         for (let i = 1; i < x_ax && i < y_ax && found === false; i++) {
           if (compboard[y_ax - i][x_ax - i].piece !== null) found = true;
-          distance = i;
+          distance = i + 1;
         }
 
         possibleOffsets = possibleOffsets.filter((move) => (
