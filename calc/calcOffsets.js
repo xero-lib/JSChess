@@ -262,12 +262,12 @@ export default function calcOffsets(piece) {
 
       return possibleOffsets;
     case Bishop:
+      console.log(1, persist(possibleOffsets));
       //check corners
-      if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 || move[1] > 0); }
-      if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0 || move[1] > 0); }
-      if (coordCompare([y_ax, x_ax], [7, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 || move[1] < 0); }
-      if (coordCompare([y_ax, x_ax], [7, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 || move[0] > 0); }
-        
+      if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 && move[1] > 0); }
+      if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 && move[1] < 0); }
+      if (coordCompare([y_ax, x_ax], [7, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0 && move[1] > 0); }
+      if (coordCompare([y_ax, x_ax], [7, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0 && move[1] < 0); }        
 
       //check edges
       if (y_ax === 7) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0); }
@@ -339,12 +339,12 @@ export default function calcOffsets(piece) {
           if (compboard[y_ax - i][x_ax - i].piece !== null) {
             found = true;
             if (compboard[y_ax - i][x_ax - i].piece.color !== piece.color) {
-              distance = i -1;
+              distance = i ;
             } else {
-              distance = i;
+              distance = i - 1;
             }
           } else {
-            distance = i - 1;
+            distance = i;
           }
         }
 
@@ -354,6 +354,7 @@ export default function calcOffsets(piece) {
           move[1] > 0
         ));
       }
+      console.log(persist(possibleOffsets));
 
       //filter down/right
       if (!coordCompare([y_ax, x_ax], [0, 7])) {
