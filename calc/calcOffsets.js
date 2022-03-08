@@ -262,7 +262,6 @@ export default function calcOffsets(piece) {
 
       return possibleOffsets;
     case Bishop:
-      console.log(1, persist(possibleOffsets));
       //check corners
       if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 && move[1] > 0); }
       if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 && move[1] < 0); }
@@ -354,7 +353,6 @@ export default function calcOffsets(piece) {
           move[1] > 0
         ));
       }
-      console.log(persist(possibleOffsets));
 
       //filter down/right
       if (!coordCompare([y_ax, x_ax], [0, 7])) {
