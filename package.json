@@ -1,6 +1,6 @@
 {
   "name": "jschess",
-  "version": "2.0.0",
+  "version": "0.42.00",
   "type": "module",
   "description": "JavaScript implementation of chess written from scratch by Jonathan Kurtz",
   "main": "index.js",
@@ -14,7 +14,9 @@
     "url": "https://github.com/xero-lib/JSChess/issues"
   },
   "homepage": "https://github.com/xero-lib/JSChess#readme",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
   "scripts": {
     "demo": "node demo.js"
   }

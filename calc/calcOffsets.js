@@ -339,12 +339,12 @@ export default function calcOffsets(piece) {
           if (compboard[y_ax - i][x_ax - i].piece !== null) {
             found = true;
             if (compboard[y_ax - i][x_ax - i].piece.color !== piece.color) {
-              distance = i;
+              distance = i -1;
             } else {
-              distance = i - 1;
+              distance = i;
             }
           } else {
-            distance = i;
+            distance = i - 1;
           }
         }
 
