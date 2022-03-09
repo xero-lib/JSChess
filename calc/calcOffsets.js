@@ -1,31 +1,40 @@
 import offsets from "../data/offsets.js";
+import persist from "../util/persist.js"
 import compboard from "../board/compboard.js";
 import getCastles from "../util/getCastles.js";
-import coordCompare from "../util/coordCompare.js";
-import { Knight, Bishop, Queen, Rook, King, Pawn } from "../data/classes.js";
 import { filterChecks } from "./calcChecks.js";
-import persist from "../util/persist.js"
+import coordCompare from "../util/coordCompare.js";
 
 export default function calcOffsets(piece) {
   let
     possibleOffsets,
     [y_ax, x_ax] = piece.location,
     found = false,
-    distance = 0;
+    distance = 0,
+    pieceName;
 
-  if (y_ax === undefined || x_ax === undefined) return null;
+  switch (piece.symbol.toLowerCase()) {
+    case 'p': pieceName = "pawn";   break;
+    case 'r': pieceName = "rook";   break;
+    case 'n': pieceName = "knight"; break;
+    case 'b': pieceName = "bishop"; break;
+    case 'q': pieceName = "queen";  break;
+    case 'k': pieceName = "king";   break;
+    default: return false;
+  }
 
-  switch (piece.constructor) {
-    case Pawn:
+  if (isNaN(y_ax) || isNaN(x_ax)) return null;
+
+  switch (piece.symbol.toLowerCase()) {
+    case 'p':
       possibleOffsets = persist((piece.color === "Dark") ? offsets.pawn.dark : offsets.pawn.light);
       break;
     default:
-      possibleOffsets = persist(offsets[piece.constructor.name.toLowerCase()]);
+      possibleOffsets = persist(offsets[pieceName]);
   }
 
-  
-  switch (piece.constructor) {
-    case Pawn:
+  switch (piece.symbol.toLowerCase()) {
+    case 'p':
       //check for edge
       if (x_ax === 0) { possibleOffsets.capture = possibleOffsets.capture.filter((move) => move[1] !== -1); } else
       if (x_ax === 7) { possibleOffsets.capture = possibleOffsets.capture.filter((move) => move[1] !== 1); }
@@ -132,7 +141,7 @@ export default function calcOffsets(piece) {
       possibleOffsets = filterChecks(piece, flat.filter((i) => !isNaN(i[0])), [y_ax, x_ax]);
 
       return possibleOffsets;
-    case Rook:
+    case 'r':
       if (y_ax === 7) { possibleOffsets = possibleOffsets.filter((move) => move[0] <= 0); } else
       if (y_ax === 0) { possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0); }
 
@@ -229,7 +238,7 @@ export default function calcOffsets(piece) {
       possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
 
       return possibleOffsets;
-    case Knight:
+    case 'n':
       //filter y edges
       if (y_ax === 1) { possibleOffsets = possibleOffsets.filter((move) => move[0] !== -2); } else
       if (y_ax === 6) { possibleOffsets = possibleOffsets.filter((move) => move[0] !== 2); } else
@@ -261,7 +270,7 @@ export default function calcOffsets(piece) {
       possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
 
       return possibleOffsets;
-    case Bishop:
+    case 'b': // Bishop
       //check corners
       if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 && move[1] > 0); }
       if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 && move[1] < 0); }
@@ -382,7 +391,7 @@ export default function calcOffsets(piece) {
       possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
       
       return possibleOffsets;
-    case Queen:
+    case 'q': // Queen
       //check for corners
       if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0 && move[1] >= 0); } else
       if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0 && move[1] <= 0); } else
@@ -592,15 +601,13 @@ export default function calcOffsets(piece) {
           move[1] === 0 ||
           move[0] >= 0 ||
           move[1] >= 0
-        )
-);
+        ));
       }
 
       possibleOffsets = filterChecks(piece, possibleOffsets, [y_ax, x_ax]);
 
-
       return possibleOffsets;
-    case King:
+    case 'k':
       //check for corners
       if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0 && move[1] >= 0); } else
       if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] >= 0 && move[1] <= 0); } else
