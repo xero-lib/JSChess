@@ -4,30 +4,18 @@ import coordCompare from "../util/coordCompare.js";
 import persist from "../util/persist.js";
 
 export default function calcWatches(piece, compboard = board) {
-  if (!piece) { return; }
+  if (!piece) { return []; }
   let watches = [],
     currentMove = [],
     possibleOffsets = [];
 
   switch (piece.symbol.toLowerCase()) {
-    case 'p':
-      possibleOffsets = persist(offsets.pawn[piece.color.toLowerCase()].capture);
-      break;
-    case 'r':
-      possibleOffsets = persist(offsets.rook);
-      break;
-    case 'n':
-      possibleOffsets = persist(offsets.knight);
-      break;
-    case 'b':
-      possibleOffsets = persist(offsets.bishop);
-      break;
-    case 'q':
-      possibleOffsets = persist(offsets.queen);
-      break;
-    case 'k':
-      possibleOffsets = persist(offsets.king);
-      break;
+    case 'p': possibleOffsets = persist(offsets.pawn[piece.color.toLowerCase()].capture); break;
+    case 'r': possibleOffsets = persist(offsets.rook)   ; break;
+    case 'n': possibleOffsets = persist(offsets.knight) ; break;
+    case 'b': possibleOffsets = persist(offsets.bishop) ; break;
+    case 'q': possibleOffsets = persist(offsets.queen)  ; break;
+    case 'k': possibleOffsets = persist(offsets.king)   ; break;
     default: return []
   }
 
