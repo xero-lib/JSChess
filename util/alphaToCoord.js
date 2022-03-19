@@ -1,4 +1,4 @@
-import files from "../board/files.js";
+import { files } from "../board/files.js";
 import persist from "./persist.js";
 
 export default function alphaToCoord(move) {

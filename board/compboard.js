@@ -1,4 +1,4 @@
-import files from "./files.js";
+import { files } from "./files.js";
 import pieces from "../data/pieces.js";
 import colorboard from "./colorboard.js";
 import coordCompare from "../util/coordCompare.js";
