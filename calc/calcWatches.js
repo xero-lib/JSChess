@@ -46,7 +46,7 @@ export default function calcWatches(piece, compboard = board) {
         ];
       }
 
-      //if not edge pawn
+      //if not edge pawn (could be combined with ternary)
       switch (piece.color) {
         case "Light":
           return [
@@ -140,24 +140,16 @@ export default function calcWatches(piece, compboard = board) {
     }
     case 'n': {
       //filter y edges
-      if (y_ax === 0)
-        possibleOffsets = possibleOffsets.filter((move) => move[0] > 0);
-      if (y_ax === 1)
-        possibleOffsets = possibleOffsets.filter((move) => move[0] !== -2);
-      if (y_ax === 6)
-        possibleOffsets = possibleOffsets.filter((move) => move[0] !== 2);
-      if (y_ax === 7)
-        possibleOffsets = possibleOffsets.filter((move) => move[0] < 0);
+      if (y_ax === 0) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0);    }
+      if (y_ax === 1) { possibleOffsets = possibleOffsets.filter((move) => move[0] !== -2); }
+      if (y_ax === 6) { possibleOffsets = possibleOffsets.filter((move) => move[0] !== 2);  }
+      if (y_ax === 7) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0);    }
 
       //filter x edges
-      if (x_ax === 0)
-        possibleOffsets = possibleOffsets.filter((move) => move[1] > 0);
-      if (x_ax === 1)
-        possibleOffsets = possibleOffsets.filter((move) => move[1] !== -2);
-      if (x_ax === 6)
-        possibleOffsets = possibleOffsets.filter((move) => move[1] !== 2);
-      if (x_ax === 7)
-        possibleOffsets = possibleOffsets.filter((move) => move[1] < 0);
+      if (x_ax === 0) { possibleOffsets = possibleOffsets.filter((move) => move[1] > 0);    }
+      if (x_ax === 1) { possibleOffsets = possibleOffsets.filter((move) => move[1] !== -2); }
+      if (x_ax === 6) { possibleOffsets = possibleOffsets.filter((move) => move[1] !== 2);  }
+      if (x_ax === 7) { possibleOffsets = possibleOffsets.filter((move) => move[1] < 0);    }
 
       possibleOffsets.forEach((offset) => {
         currentMove = [y_ax + offset[0], x_ax + offset[1]];
@@ -168,23 +160,10 @@ export default function calcWatches(piece, compboard = board) {
     }
     case 'b': {
       //check corners
-      if (coordCompare([y_ax, x_ax], [0, 0])) {
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] > 0 || move[1] > 0
-        );
-      } else if (coordCompare([y_ax, x_ax], [0, 7])) {
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] < 0 || move[1] > 0
-        );
-      } else if (coordCompare([y_ax, x_ax], [7, 0])) {
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] > 0 || move[1] < 0
-        );
-      } else if (coordCompare([y_ax, x_ax], [7, 7])) {
-        possibleOffsets = possibleOffsets.filter(
-          (move) => move[0] > 0 || move[0] > 0
-        );
-      }
+      if (coordCompare([y_ax, x_ax], [0, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 || move[1] > 0); } else
+      if (coordCompare([y_ax, x_ax], [0, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0 || move[1] > 0); } else
+      if (coordCompare([y_ax, x_ax], [7, 0])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 || move[1] < 0); } else
+      if (coordCompare([y_ax, x_ax], [7, 7])) { possibleOffsets = possibleOffsets.filter((move) => move[0] > 0 || move[0] > 0); }
 
       //check edges
       if (y_ax === 7) { possibleOffsets = possibleOffsets.filter((move) => move[0] < 0); } else
@@ -205,9 +184,8 @@ export default function calcWatches(piece, compboard = board) {
         }
 
         possibleOffsets = possibleOffsets.filter((move) => (
-          (move[0] === 0 - move[1] && move[0] <= distance) ||
+          (move[0] === -move[1] && move[0] <= distance) ||
           (move[0] < distance && move[1] < 0 - distance) ||
-          (move[0] === 0 || move[1] === 0) ||
           (move[1] >= 0) ||
           (move[0] <= 0)
         ));
@@ -228,7 +206,6 @@ export default function calcWatches(piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => (
           (move[0] !== move[1]) ||
           (move[0] <= distance && move[1] <= distance) ||
-          (move[0] === 0 || move[1] === 0) ||
           (move[0] <= 0) ||
           (move[1] <= 0)
         ));
@@ -372,8 +349,6 @@ export default function calcWatches(piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => (
           (move[0] <= distance && move[1] <= distance) ||
           move[0] !== move[1] ||
-          move[0] === 0 ||
-          move[1] === 0 ||
           move[0] <= 0 ||
           move[1] <= 0
         ));
@@ -394,8 +369,6 @@ export default function calcWatches(piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => (
           (move[0] <= distance && move[1] <= -distance) ||
           (move[0] === -move[1] && move[0] <= distance) ||
-          move[0] === 0 ||
-          move[1] === 0 ||
           move[1] >= 0 ||
           move[0] <= 0
         ));
@@ -416,8 +389,6 @@ export default function calcWatches(piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => (
           (-move[0] === move[1] && move[1] <= distance) ||
           (move[0] === -move[1] && move[1] <= distance) ||
-          move[0] === 0 ||
-          move[1] === 0 ||
           move[0] >= 0 ||
           move[1] <= 0
         ));
@@ -438,8 +409,6 @@ export default function calcWatches(piece, compboard = board) {
         possibleOffsets = possibleOffsets.filter((move) => ( //pretty sure this works :P
           (move[0] >= -distance && move[1] >= -distance) ||
           move[0] !== move[1] ||
-          move[0] === 0 ||
-          move[1] === 0 ||
           move[0] >= 0 ||
           move[1] >= 0
         ));
