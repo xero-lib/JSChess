@@ -275,7 +275,7 @@ export default function calcWatches(piece, compboard = board) {
         distance = 0;
         found = false;
 
-        for (let i = 1; i < 7 - y_ax && found === false; i++) {
+        for (let i = 1; i < 8 - y_ax && found === false; i++) {
           if (compboard[y_ax + i][x_ax].piece) {
             found = true;
           }
