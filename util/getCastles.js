@@ -1,5 +1,4 @@
 import compboard from "../board/compboard.js";
-import { King } from "../data/classes.js";
 import calcWatches from "../calc/calcWatches.js";
 import coordCompare from "./coordCompare.js";
 import calcChecks from "../calc/calcChecks.js";
@@ -23,21 +22,20 @@ export default function getCastles(king) {
     king: true,
   };
   let rookCheck = (y, x) =>
-    compboard[y][x].piece != null &&
-    compboard[y][x].piece.symbol == "R" &&
-    compboard[y][x].piece.hasMoved == false;
+    compboard[y][x].piece &&
+    compboard[y][x].piece.symbol.toLowerCase() === "r" &&
+    compboard[y][x].piece.hasMoved === false;
 
   if (
-    compboard[king.color == "Dark" ? 7 : 0][4].piece.color !=
-      (king.color == "Dark" ? "Dark" : "Light") ||
-    compboard[king.color == "Dark" ? 7 : 0][4].piece.constructor != King ||
-    compboard[king.color == "Dark" ? 7 : 0][6].piece != null ||
-    compboard[king.color == "Dark" ? 7 : 0][5].piece != null ||
-    compboard[king.color == "Dark" ? 7 : 0][3].piece != null ||
-    compboard[king.color == "Dark" ? 7 : 0][2].piece != null ||
-    compboard[king.color == "Dark" ? 7 : 0][1].piece != null ||
+    compboard[king.color === "Dark" ? 7 : 0][4].piece.color !== (king.color === "Dark" ? "Dark" : "Light") ||
+    compboard[king.color === "Dark" ? 7 : 0][4].piece.symbol.toLowerCase() !== 'k' ||
+    compboard[king.color === "Dark" ? 7 : 0][6].piece ||
+    compboard[king.color === "Dark" ? 7 : 0][5].piece ||
+    compboard[king.color === "Dark" ? 7 : 0][3].piece ||
+    compboard[king.color === "Dark" ? 7 : 0][2].piece ||
+    compboard[king.color === "Dark" ? 7 : 0][1].piece ||
     calcChecks(king) ||
-    (king.color == "Dark"
+    (king.color === "Dark"
       ? !rookCheck(7, 7) || !rookCheck(7, 0)
       : !rookCheck(0, 7) || !rookCheck(0, 0))
   ) {
@@ -45,7 +43,7 @@ export default function getCastles(king) {
     for (let row of compboard) {
       // could use optimizing
       for (let sqr of row) {
-        if (!sqr.piece || sqr.piece.color != king.color) {
+        if (!sqr.piece || sqr.piece.color !== king.color) {
           continue;
         }
         for (let watch in calcWatches(sqr.piece)) {
@@ -60,14 +58,14 @@ export default function getCastles(king) {
             }
           }
 
-          let y = king.color == "Dark" ? 7 : 0;
+          let y = king.color === "Dark" ? 7 : 0;
 
           if (
             coordCompare(watch, [y, 2]) ||
             coordCompare(watch, [y, 3]) ||
-            compboard[y][3].piece != null ||
-            compboard[y][2].piece != null ||
-            compboard[y][1].piece != null
+            compboard[y][3].piece !== null ||
+            compboard[y][2].piece !== null ||
+            compboard[y][1].piece !== null
           ) {
             castles.queen = false; // disallow queen side castling
           }
@@ -75,8 +73,8 @@ export default function getCastles(king) {
           if (
             coordCompare(watch, [y, 5]) ||
             coordCompare(watch, [y, 6]) ||
-            compboard[y][6].piece != null ||
-            compboard[y][5].piece != null
+            compboard[y][6].piece !== null ||
+            compboard[y][5].piece !== null
           ) {
             castles.king = false;
           }
@@ -91,11 +89,11 @@ export default function getCastles(king) {
   }
 
   if (castles.king) {
-    carr.push(king.color == "Light" ? "K" : "k");
+    carr.push(king.color === "Light" ? "K" : "k");
   }
 
   if (castles.queen) {
-    carr.push(king.color == "Light" ? "Q" : "q");
+    carr.push(king.color === "Light" ? "Q" : "q");
   }
 
   return carr;

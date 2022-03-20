@@ -1,5 +1,5 @@
 import compboard from "../board/compboard.js";
 
-export default function () {
+export default function getBoardJSON() {
   return JSON.stringify(compboard);
 }

@@ -1,6 +1,6 @@
 import { Pawn, Rook, Knight, Bishop, King, Queen } from "../data/classes.js";
 
-export default function (letter) {
+export default function letterToPiece(letter) {
   switch (letter.toLowerCase()) {
     case "p":
       return Pawn;
