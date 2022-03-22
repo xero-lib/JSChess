@@ -59,7 +59,7 @@ export default function move(piece, destination, promote) {
       }
     }
 
-    if (piece.symbol.toLowerCase() === 'p' && compboard[atc[0]][atc[1]].piece == null) {
+    if (piece.symbol.toLowerCase() === 'p' && compboard[atc[0]][atc[1]].piece === null) {
       compboard[piece.location[0]][atc[1]].piece = null;
     }
 

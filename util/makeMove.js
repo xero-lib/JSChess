@@ -1,5 +1,5 @@
 import move from "./move.js";
-// import printBoard from "./printBoard.js";
+import printBoard from "./printBoard.js";
 import coordToPiece from "./coordToPiece.js";
 import refreshBoard from "./refreshBoard.js";
 import coordToLocation from "./coordToLocation.js";
@@ -37,7 +37,7 @@ export default function makeMove(start, end, promote = "q") {
       if (turn === "Dark") {
         updateMoveCount(moveCount + 1);
       }
-      // printBoard();
+      printBoard();
       turn = turn === "Light" ? "Dark" : "Light";
       if (isTaking || piece.symbol.toLowerCase() === 'p') {
         updateHalfMove(0);
@@ -100,12 +100,12 @@ export default function makeMove(start, end, promote = "q") {
       return ret;
     } else {
       console.log("Illegal move.");
-      // printBoard();
+      printBoard();
       return -1;
     }
   } else {
     console.log(`It is not this colors turn.`);
-    // printBoard();
+    printBoard();
     return -2;
   }
 }

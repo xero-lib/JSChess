@@ -1,5 +1,5 @@
 import compboard from "../board/compboard.js";
-// import printBoard from "../util/printBoard.js";
+import printBoard from "../util/printBoard.js";
 import clearBoard from "../util/clearBoard.js";
 import {
   halfMoveCount,
@@ -102,7 +102,7 @@ export function set_FEN(FEN_string) {
   updateMoveCount(fullMove);
 
   refreshBoard();
-  // printBoard();
+  printBoard();
 }
 
 export function get_FEN() {
