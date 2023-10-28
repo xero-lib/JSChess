@@ -1,6 +1,10 @@
-# JSChess
-
-A JavaScript chessboard program.
+<p align="center">
+  <br>
+  <img width="25%" src="https://github.com/xero-lib/JSChess/assets/54485853/65a8e657-cefe-41fd-81e3-9270071da1a0" alt="SkyOS Logo">
+</p>
+<p align="center">
+    <em>Chess board with rule enforcement and state feedback, written in JavaScript.</em>
+</p>
 
 ## Basic Use
 
